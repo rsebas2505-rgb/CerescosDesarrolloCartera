@@ -1,0 +1,1227 @@
+﻿<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Cerescos | Solicitud de cartera</title>
+
+        <link rel="stylesheet" href="css/index.css" />
+    </head>
+
+    <body>
+        <!-- =========================================================
+         ENCABEZADO
+    ========================================================= -->
+
+        <header class="encabezado">
+            <a href="index.html" class="logo" title="Volver al menú inicial">
+                <img src="img/logo-cerescos.png" alt="Cerescos" />
+            </a>
+
+            <div class="separador"></div>
+
+            <div class="titulo-sistema"> Solicitud de cartera </div>
+
+            <div class="cuenta">
+                <div class="datos-usuario">
+                    <div class="usuario-nombre" id="usuarioNombre"> Usuario </div>
+
+                    <div class="usuario-rol" id="usuarioRol"> Creador </div>
+                </div>
+
+                <div class="avatar" id="avatar"> U </div>
+
+                <button class="btn-cerrar" id="btnCerrar"> Cerrar sesión </button>
+            </div>
+        </header>
+
+        <!-- =========================================================
+         CONTENIDO
+    ========================================================= -->
+
+        <main class="contenedor">
+            <section class="titulo-principal">
+                <h1>
+                    Gestión de
+
+                    <span> Solicitudes </span>
+                </h1>
+
+                <p>
+                    Plataforma interna de Cerescos para registrar, gestionar y realizar seguimiento
+                    a las solicitudes de cartera y su proceso de aprobación.
+                </p>
+            </section>
+
+            <!-- =====================================================
+             TARJETAS
+        ===================================================== -->
+
+            <section class="tarjetas">
+                <!-- =================================================
+                 SOLICITUDES
+            ================================================= -->
+
+                <div class="tarjeta tarjeta-solicitudes" id="tarjetaSolicitudes">
+                    <div class="icono"> 📋 </div>
+
+                    <h2> Solicitudes </h2>
+
+                    <p> Registra y consulta las solicitudes realizadas dentro del sistema. </p>
+                </div>
+
+                <!-- =================================================
+                 APROBACIONES
+            ================================================= -->
+
+                <a
+                    href="jefe.html"
+                    class="tarjeta tarjeta-enlace"
+                    id="tarjetaAprobaciones"
+                    style="display: none"
+                >
+                    <div class="icono"> 🔄 </div>
+
+                    <h2> Aprobaciones </h2>
+
+                    <p>
+                        Consulta las solicitudes pendientes de aprobación y toma las decisiones
+                        correspondientes.
+                    </p>
+                </a>
+
+                <!-- =================================================
+                 TRAZABILIDAD
+            ================================================= -->
+
+                <a href="trazabilidad.html" class="tarjeta tarjeta-enlace" id="tarjetaTrazabilidad">
+                    <div class="icono"> 📊 </div>
+
+                    <h2> Trazabilidad </h2>
+
+                    <p>
+                        Consulta el recorrido completo de las solicitudes y conoce el estado de cada
+                        etapa de aprobación.
+                    </p>
+                </a>
+            </section>
+
+            <!-- =====================================================
+             SOLICITUDES
+        ===================================================== -->
+
+            <section class="mis-solicitudes" id="misSolicitudes">
+                <h2 id="tituloSolicitudes"> Mis solicitudes </h2>
+
+                <p class="mis-solicitudes-descripcion" id="descripcionSolicitudes">
+                    Consulta el estado de las solicitudes que has registrado.
+                </p>
+
+                <div class="lista-solicitudes" id="listaSolicitudes">
+                    <div class="cargando"> Cargando solicitudes... </div>
+                </div>
+            </section>
+
+            <!-- =====================================================
+             NUEVA SOLICITUD
+        ===================================================== -->
+
+            <section class="nueva-solicitud">
+                <div>
+                    <h2> ¿Necesitas realizar una solicitud? </h2>
+
+                    <p>
+                        Inicia una nueva solicitud de cartera y completa la información requerida.
+                    </p>
+                </div>
+
+                <a href="solicitud.html" class="btn-nueva"> Nueva solicitud </a>
+            </section>
+        </main>
+
+        <!-- =========================================================
+         PIE
+    ========================================================= -->
+
+        <footer> Cerescos · Gestión de Solicitudes </footer>
+
+        <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
+
+        <script src="js/comun.js"></script>
+
+        <script>
+            /* =========================================
+           USUARIO DE LA SESIÓN
+        ========================================= */
+
+            let usuario = null;
+
+            /* =========================================
+           ELEMENTOS
+        ========================================= */
+
+            const tarjetaSolicitudes = document.getElementById("tarjetaSolicitudes");
+
+            const tarjetaAprobaciones = document.getElementById("tarjetaAprobaciones");
+
+            const tarjetaTrazabilidad = document.getElementById("tarjetaTrazabilidad");
+
+            const misSolicitudes = document.getElementById("misSolicitudes");
+
+            const tituloSolicitudes = document.getElementById("tituloSolicitudes");
+
+            const descripcionSolicitudes = document.getElementById("descripcionSolicitudes");
+
+            const listaSolicitudes = document.getElementById("listaSolicitudes");
+
+            /* =========================================
+           ESTADO DE LA TABLA DE CARTERA
+        ========================================= */
+
+            let solicitudesCartera = [];
+
+            let ordenCartera = {
+                campo: "id",
+                ascendente: false,
+            };
+
+            /* =========================================
+           OBTENER ID DEL USUARIO
+        ========================================= */
+
+            function obtenerUsuarioId() {
+                if (!usuario) {
+                    return null;
+                }
+
+                const id = usuario.Id ?? usuario.id ?? usuario.UsuarioId ?? usuario.usuarioId;
+
+                const numero = Number(id);
+
+                if (!numero || isNaN(numero)) {
+                    return null;
+                }
+
+                return numero;
+            }
+
+            /* =========================================
+           OBTENER NOMBRE DEL USUARIO
+        ========================================= */
+
+            function obtenerNombreUsuario() {
+                if (!usuario) {
+                    return "Usuario";
+                }
+
+                /*
+               SOLO MOSTRAMOS EL NOMBRE DE USUARIO.
+               NO SE AGREGA APELLIDO.
+            */
+
+                const nombreUsuario =
+                    usuario.UsuarioNombre ??
+                    usuario.usuarioNombre ??
+                    usuario.NombreUsuario ??
+                    usuario.nombreUsuario ??
+                    "";
+
+                return nombreUsuario || "Usuario";
+            }
+
+            /* =========================================
+           OBTENER ROL
+        ========================================= */
+
+            function obtenerRolUsuario() {
+                if (!usuario) {
+                    return "";
+                }
+
+                return usuario.Rol ?? usuario.rol ?? "";
+            }
+
+            /* =========================================
+           MOSTRAR DATOS DEL USUARIO
+        ========================================= */
+
+            function configurarInterfaz() {
+                const nombreUsuario = obtenerNombreUsuario();
+
+                const rolUsuario = obtenerRolUsuario();
+
+                document.getElementById("usuarioNombre").textContent = nombreUsuario;
+
+                document.getElementById("usuarioRol").textContent = rolUsuario;
+
+                document.getElementById("avatar").textContent = nombreUsuario
+                    .charAt(0)
+                    .toUpperCase();
+
+                /* =====================================
+               CREADOR
+            ===================================== */
+
+                if (rolUsuario === "Creador") {
+                    tarjetaAprobaciones.style.display = "none";
+
+                    misSolicitudes.style.display = "none";
+                }
+
+                /* =====================================
+               JEFE DE DEPÓSITOS
+            ===================================== */
+                else if (rolUsuario === "Jefe de Depósitos") {
+                    tarjetaAprobaciones.style.display = "block";
+
+                    tarjetaAprobaciones.href = "jefe.html";
+
+                    misSolicitudes.style.display = "none";
+                }
+
+                /* =====================================
+               JEFE DE CADENAS
+            ===================================== */
+                else if (rolUsuario === "Jefe de Cadenas") {
+                    tarjetaAprobaciones.style.display = "block";
+
+                    tarjetaAprobaciones.href = "jefe.html";
+
+                    misSolicitudes.style.display = "none";
+                }
+
+                /* =====================================
+               CARTERA
+            ===================================== */
+                else if (rolUsuario === "Persona de cartera" || rolUsuario === "Cartera") {
+                    tarjetaAprobaciones.style.display = "block";
+
+                    tarjetaAprobaciones.href = "cartera.html";
+
+                    misSolicitudes.style.display = "none";
+                }
+
+                /* =====================================
+               OTRO ROL
+            ===================================== */
+                else {
+                    tarjetaAprobaciones.style.display = "none";
+
+                    misSolicitudes.style.display = "none";
+                }
+            }
+
+            /* =========================================
+           INICIAR PÁGINA
+        ========================================= */
+
+            async function iniciarPagina() {
+                usuario = await obtenerUsuarioSesion();
+
+                if (!usuario) {
+                    return;
+                }
+
+                configurarInterfaz();
+            }
+
+            iniciarPagina();
+
+            /* =========================================
+           CLICK EN SOLICITUDES
+        ========================================= */
+
+            tarjetaSolicitudes.addEventListener("click", function () {
+                if (!usuario) {
+                    return;
+                }
+
+                const idUsuario = obtenerUsuarioId();
+
+                const rolUsuario = obtenerRolUsuario();
+
+                if (!idUsuario) {
+                    alert("No fue posible identificar el usuario actual.");
+
+                    return;
+                }
+
+                /* =================================
+                   CREADOR
+                ================================= */
+
+                if (rolUsuario === "Creador") {
+                    tituloSolicitudes.textContent = "Mis solicitudes";
+
+                    descripcionSolicitudes.textContent =
+                        "Consulta el estado de las solicitudes que has registrado.";
+
+                    misSolicitudes.style.display = "block";
+
+                    cargarMisSolicitudes(idUsuario);
+                }
+
+                /* =================================
+                   JEFE
+                ================================= */
+                else if (rolUsuario === "Jefe de Depósitos" || rolUsuario === "Jefe de Cadenas") {
+                    tituloSolicitudes.textContent = "Solicitudes gestionadas";
+
+                    descripcionSolicitudes.textContent =
+                        "Consulta las solicitudes asignadas a tu perfil y su estado de aprobación.";
+
+                    misSolicitudes.style.display = "block";
+
+                    cargarHistorialJefe(idUsuario);
+                }
+
+                /* =================================
+                   CARTERA
+                ================================= */
+                else if (rolUsuario === "Cartera" || rolUsuario === "Persona de cartera") {
+                    tituloSolicitudes.textContent = "Solicitudes de Cartera";
+
+                    descripcionSolicitudes.textContent =
+                        "Consulta las solicitudes aprobadas o rechazadas, incluyendo las gestionadas por Cartera.";
+
+                    misSolicitudes.style.display = "block";
+
+                    cargarSolicitudesCartera(idUsuario);
+                }
+
+                /* =================================
+                   OTRO ROL
+                ================================= */
+                else {
+                    tituloSolicitudes.textContent = "Solicitudes";
+
+                    descripcionSolicitudes.textContent =
+                        "Este perfil no tiene solicitudes disponibles para consultar.";
+
+                    misSolicitudes.style.display = "block";
+
+                    listaSolicitudes.innerHTML = `
+
+                                    <div class="sin-solicitudes">
+
+                                        No hay solicitudes disponibles.
+
+                                    </div>
+
+                                `;
+                }
+
+                /* =================================
+                   BAJAR AL LISTADO
+                ================================= */
+
+                setTimeout(function () {
+                    misSolicitudes.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                    });
+                }, 100);
+            });
+
+            /* =========================================
+           CARGAR SOLICITUDES DEL CREADOR
+        ========================================= */
+
+            async function cargarMisSolicitudes(usuarioId) {
+                listaSolicitudes.innerHTML = `
+
+                            <div class="cargando">
+
+                                Cargando solicitudes...
+
+                            </div>
+
+                        `;
+
+                try {
+                    const respuesta = await fetch(
+                        `/api/Solicitudes/creador?usuarioId=${encodeURIComponent(usuarioId)}`,
+                    );
+
+                    if (!respuesta.ok) {
+                        const error = await respuesta.json().catch(() => null);
+
+                        throw new Error(
+                            error?.mensaje || "No fue posible consultar las solicitudes.",
+                        );
+                    }
+
+                    const datos = await respuesta.json();
+
+                    let solicitudes = [];
+
+                    if (Array.isArray(datos)) {
+                        solicitudes = datos;
+                    } else if (Array.isArray(datos?.solicitudes)) {
+                        solicitudes = datos.solicitudes;
+                    } else if (Array.isArray(datos?.Solicitudes)) {
+                        solicitudes = datos.Solicitudes;
+                    }
+
+                    if (solicitudes.length === 0) {
+                        listaSolicitudes.innerHTML = `
+
+                                    <div class="sin-solicitudes">
+
+                                        Todavía no has generado ninguna solicitud.
+
+                                    </div>
+
+                                `;
+
+                        return;
+                    }
+
+                    listaSolicitudes.innerHTML = solicitudes
+                        .map((solicitud) => crearSolicitudHTML(solicitud, false))
+                        .join("");
+                } catch (error) {
+                    console.error("Error cargando solicitudes:", error);
+
+                    listaSolicitudes.innerHTML = `
+
+                                <div class="sin-solicitudes">
+
+                                    No fue posible cargar tus solicitudes.
+
+                                </div>
+
+                            `;
+                }
+            }
+
+            /* =========================================
+           CARGAR HISTORIAL DEL JEFE
+        ========================================= */
+
+            async function cargarHistorialJefe(usuarioId) {
+                listaSolicitudes.innerHTML = `
+
+                            <div class="cargando">
+
+                                Cargando solicitudes...
+
+                            </div>
+
+                        `;
+
+                try {
+                    const respuesta = await fetch(
+                        `/api/Solicitudes/jefe/historial?usuarioId=${encodeURIComponent(usuarioId)}`,
+                    );
+
+                    if (!respuesta.ok) {
+                        const error = await respuesta.json().catch(() => null);
+
+                        throw new Error(error?.mensaje || "No fue posible consultar el historial.");
+                    }
+
+                    const datos = await respuesta.json();
+
+                    const solicitudes = datos.solicitudes || datos.Solicitudes || [];
+
+                    if (solicitudes.length === 0) {
+                        listaSolicitudes.innerHTML = `
+
+                                    <div class="sin-solicitudes">
+
+                                        No tienes solicitudes asignadas.
+
+                                    </div>
+
+                                `;
+
+                        return;
+                    }
+
+                    listaSolicitudes.innerHTML = solicitudes
+                        .map((solicitud) => crearSolicitudHTML(solicitud, true))
+                        .join("");
+                } catch (error) {
+                    console.error("Error cargando historial:", error);
+
+                    listaSolicitudes.innerHTML = `
+
+                                <div class="sin-solicitudes">
+
+                                    No fue posible cargar el historial de solicitudes.
+
+                                </div>
+
+                            `;
+                }
+            }
+
+            /* =========================================
+           CARGAR SOLICITUDES DE CARTERA
+        ========================================= */
+
+            async function cargarSolicitudesCartera(usuarioId) {
+                listaSolicitudes.innerHTML = `
+
+                            <div class="cargando">
+
+                                Cargando solicitudes...
+
+                            </div>
+
+                        `;
+
+                try {
+                    const respuesta = await fetch(
+                        `/api/Solicitudes/cartera?usuarioId=${encodeURIComponent(usuarioId)}`,
+                    );
+
+                    if (!respuesta.ok) {
+                        const error = await respuesta.json().catch(() => null);
+
+                        throw new Error(
+                            error?.mensaje ||
+                                "No fue posible consultar las solicitudes de Cartera.",
+                        );
+                    }
+
+                    const datos = await respuesta.json();
+
+                    let solicitudes = [];
+
+                    if (Array.isArray(datos)) {
+                        solicitudes = datos;
+                    } else if (Array.isArray(datos?.solicitudes)) {
+                        solicitudes = datos.solicitudes;
+                    } else if (Array.isArray(datos?.Solicitudes)) {
+                        solicitudes = datos.Solicitudes;
+                    }
+
+                    if (solicitudes.length === 0) {
+                        solicitudesCartera = [];
+
+                        listaSolicitudes.innerHTML = `
+
+                                    <div class="sin-solicitudes">
+
+                                        Todavía no hay solicitudes aprobadas o rechazadas para consultar.
+
+                                    </div>
+
+                                `;
+
+                        return;
+                    }
+
+                    solicitudesCartera = solicitudes;
+
+                    listaSolicitudes.innerHTML = crearTablaCartera(solicitudesCartera);
+                } catch (error) {
+                    console.error("Error cargando solicitudes de Cartera:", error);
+
+                    listaSolicitudes.innerHTML = `
+
+                                <div class="sin-solicitudes">
+
+                                    No fue posible cargar las solicitudes de Cartera.
+
+                                </div>
+
+                            `;
+                }
+            }
+
+            /* =========================================
+           ESTADO PARA LA TABLA DE CARTERA
+        ========================================= */
+
+            function calcularEstadoCartera(solicitud) {
+                const estadoJefe = solicitud.EstadoJefe ?? solicitud.estadoJefe ?? "Pendiente";
+
+                const estadoGeneral =
+                    solicitud.EstadoGeneral ?? solicitud.estadoGeneral ?? "Pendiente";
+
+                const estadoCartera =
+                    solicitud.EstadoCartera ?? solicitud.estadoCartera ?? "Pendiente";
+
+                if (
+                    estadoJefe === "Rechazado" ||
+                    estadoCartera === "Rechazado" ||
+                    estadoGeneral === "Rechazado"
+                ) {
+                    return {
+                        texto: "NO APROBADO",
+                        clase: "estado-rechazado",
+                    };
+                }
+
+                if (estadoCartera === "Aprobado" || estadoGeneral === "Aprobado") {
+                    return {
+                        texto: "Aprobado",
+                        clase: "estado-aprobado",
+                    };
+                }
+
+                if (
+                    estadoGeneral === "En revisión de Cartera" ||
+                    (estadoJefe === "Aprobado" && estadoCartera === "Pendiente")
+                ) {
+                    return {
+                        texto: "En revisión de Cartera",
+                        clase: "estado-cartera",
+                    };
+                }
+
+                return {
+                    texto: "Pendiente",
+                    clase: "estado-pendiente",
+                };
+            }
+
+            /* =========================================
+           VALOR PARA ORDENAR
+        ========================================= */
+
+            function valorOrdenCartera(solicitud, campo) {
+                if (campo === "id") {
+                    return Number(solicitud.Id ?? solicitud.id ?? 0);
+                }
+
+                if (campo === "estado") {
+                    return calcularEstadoCartera(solicitud).texto;
+                }
+
+                if (campo === "cliente") {
+                    return solicitud.NombreCliente ?? solicitud.nombreCliente ?? "";
+                }
+
+                if (campo === "canal") {
+                    return solicitud.Canal ?? solicitud.canal ?? "";
+                }
+
+                if (campo === "fecha") {
+                    const fecha = new Date(
+                        solicitud.FechaSolicitud ?? solicitud.fechaSolicitud ?? "",
+                    );
+
+                    return isNaN(fecha.getTime()) ? 0 : fecha.getTime();
+                }
+
+                if (campo === "tipo") {
+                    return solicitud.TipoSolicitud ?? solicitud.tipoSolicitud ?? "";
+                }
+
+                if (campo === "detalle") {
+                    return solicitud.DetalleSolicitud ?? solicitud.detalleSolicitud ?? "";
+                }
+
+                return "";
+            }
+
+            /* =========================================
+           ORDENAR TABLA DE CARTERA
+        ========================================= */
+
+            function ordenarTablaCartera(campo) {
+                if (ordenCartera.campo === campo) {
+                    ordenCartera.ascendente = !ordenCartera.ascendente;
+                } else {
+                    ordenCartera.campo = campo;
+
+                    ordenCartera.ascendente = true;
+                }
+
+                listaSolicitudes.innerHTML = crearTablaCartera(solicitudesCartera);
+            }
+
+            /* =========================================
+           ENCABEZADO ORDENABLE
+        ========================================= */
+
+            function encabezadoCartera(campo, titulo) {
+                const activo = ordenCartera.campo === campo;
+
+                const flecha = activo ? (ordenCartera.ascendente ? "▲" : "▼") : "⌄";
+
+                return `
+
+                    <th
+                        class="th-ordenable"
+                        onclick="ordenarTablaCartera('${campo}')"
+                    >
+
+                        ${escapeHtml(titulo)}
+
+                        <span class="flecha-orden ${activo ? "flecha-orden-activa" : ""}">
+                            ${flecha}
+                        </span>
+
+                    </th>
+
+                `;
+            }
+
+            /* =========================================
+           TABLA DE SOLICITUDES DE CARTERA
+        ========================================= */
+
+            function crearTablaCartera(solicitudes) {
+                const ordenadas = solicitudes.slice().sort(function (a, b) {
+                    const valorA = valorOrdenCartera(a, ordenCartera.campo);
+
+                    const valorB = valorOrdenCartera(b, ordenCartera.campo);
+
+                    let comparacion = 0;
+
+                    if (typeof valorA === "number" && typeof valorB === "number") {
+                        comparacion = valorA - valorB;
+                    } else {
+                        comparacion = String(valorA).localeCompare(String(valorB), "es", {
+                            sensitivity: "base",
+                        });
+                    }
+
+                    return ordenCartera.ascendente ? comparacion : -comparacion;
+                });
+
+                const filas = ordenadas
+                    .map(function (solicitud) {
+                        const id = solicitud.Id ?? solicitud.id ?? "";
+
+                        const numero = Number(id);
+
+                        const cliente = solicitud.NombreCliente ?? solicitud.nombreCliente ?? "";
+
+                        const canal = solicitud.Canal ?? solicitud.canal ?? "";
+
+                        const fechaSolicitud =
+                            solicitud.FechaSolicitud ?? solicitud.fechaSolicitud ?? "";
+
+                        const tipoSolicitud =
+                            solicitud.TipoSolicitud ?? solicitud.tipoSolicitud ?? "";
+
+                        const detalleSolicitud =
+                            solicitud.DetalleSolicitud ?? solicitud.detalleSolicitud ?? "";
+
+                        const estado = calcularEstadoCartera(solicitud);
+
+                        const botonTrazabilidad =
+                            numero > 0
+                                ? `
+
+                                            <button
+                                                type="button"
+                                                class="btn-icono-tabla"
+                                                title="Ver trazabilidad"
+                                                onclick="abrirTrazabilidad(event, ${numero})"
+                                            >
+
+                                                📊
+
+                                            </button>
+
+                                          `
+                                : "";
+
+                        return `
+
+                                    <tr>
+
+                                        <td class="columna-icono">
+                                            ${botonTrazabilidad}
+                                            ${enlaceAdjunto(numero, solicitud, "icono")}
+                                        </td>
+
+                                        <td class="celda-numero">
+                                            Solicitud # ${escapeHtml(String(id))}
+                                        </td>
+
+                                        <td>
+                                            <span class="estado ${estado.clase}">
+                                                ${escapeHtml(estado.texto)}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            ${escapeHtml(cliente)}
+                                        </td>
+
+                                        <td>
+                                            ${escapeHtml(canal)}
+                                        </td>
+
+                                        <td>
+                                            ${formatearFecha(fechaSolicitud)}
+                                        </td>
+
+                                        <td>
+                                            ${escapeHtml(tipoSolicitud)}
+                                        </td>
+
+                                        <td class="celda-detalle">
+                                            ${escapeHtml(detalleSolicitud)}
+                                        </td>
+
+                                    </tr>
+
+                                `;
+                    })
+                    .join("");
+
+                return `
+
+                    <div class="tabla-cartera-contenedor">
+
+                        <table class="tabla-cartera">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th class="columna-icono"></th>
+
+                                    ${encabezadoCartera("id", "Solicitud")}
+
+                                    ${encabezadoCartera("estado", "Estado")}
+
+                                    ${encabezadoCartera("cliente", "Cliente")}
+
+                                    ${encabezadoCartera("canal", "Canal")}
+
+                                    ${encabezadoCartera("fecha", "Fecha de solicitud")}
+
+                                    ${encabezadoCartera("tipo", "Tipo de solicitud")}
+
+                                    ${encabezadoCartera("detalle", "Detalle")}
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                ${filas}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                `;
+            }
+
+            /* =========================================
+           CREAR SOLICITUD HTML
+        ========================================= */
+
+            function crearSolicitudHTML(solicitud, esJefe) {
+                const id = solicitud.Id ?? solicitud.id ?? "";
+
+                const canal = solicitud.Canal ?? solicitud.canal ?? "";
+
+                const cliente = solicitud.NombreCliente ?? solicitud.nombreCliente ?? "";
+
+                const estadoJefe = solicitud.EstadoJefe ?? solicitud.estadoJefe ?? "Pendiente";
+
+                const estadoGeneral =
+                    solicitud.EstadoGeneral ?? solicitud.estadoGeneral ?? "Pendiente";
+
+                const estadoCartera =
+                    solicitud.EstadoCartera ?? solicitud.estadoCartera ?? "Pendiente";
+
+                const fechaSolicitud = solicitud.FechaSolicitud ?? solicitud.fechaSolicitud ?? "";
+
+                const tipoSolicitud = solicitud.TipoSolicitud ?? solicitud.tipoSolicitud ?? "";
+
+                const detalleSolicitud =
+                    solicitud.DetalleSolicitud ?? solicitud.detalleSolicitud ?? "";
+
+                let textoEstado = "Pendiente";
+
+                let claseEstado = "estado-pendiente";
+
+                if (esJefe) {
+                    if (estadoJefe === "Aprobado") {
+                        textoEstado = "Aprobado";
+
+                        claseEstado = "estado-aprobado";
+                    } else if (estadoJefe === "Rechazado") {
+                        textoEstado = "Rechazado";
+
+                        claseEstado = "estado-rechazado";
+                    } else {
+                        textoEstado = "Pendiente";
+
+                        claseEstado = "estado-pendiente";
+                    }
+                } else {
+                    if (
+                        estadoJefe === "Rechazado" ||
+                        estadoCartera === "Rechazado" ||
+                        estadoGeneral === "Rechazado"
+                    ) {
+                        textoEstado = "NO APROBADO";
+
+                        claseEstado = "estado-rechazado";
+                    } else if (estadoCartera === "Aprobado" || estadoGeneral === "Aprobado") {
+                        textoEstado = "Aprobado";
+
+                        claseEstado = "estado-aprobado";
+                    } else if (
+                        estadoGeneral === "En revisión de Cartera" ||
+                        (estadoJefe === "Aprobado" && estadoCartera === "Pendiente")
+                    ) {
+                        textoEstado = "En revisión de Cartera";
+
+                        claseEstado = "estado-cartera";
+                    } else {
+                        textoEstado = "Pendiente";
+
+                        claseEstado = "estado-pendiente";
+                    }
+                }
+
+                let informacionCreador = "";
+
+                if (esJefe) {
+                    const usuarioCreador =
+                        solicitud.UsuarioCreadorNombre ?? solicitud.usuarioCreadorNombre ?? "";
+
+                    const nombreCreador = solicitud.NombreCreador ?? solicitud.nombreCreador ?? "";
+
+                    const apellidoCreador =
+                        solicitud.ApellidoCreador ?? solicitud.apellidoCreador ?? "";
+
+                    const nombreCompleto = `${nombreCreador} ${apellidoCreador}`.trim();
+
+                    informacionCreador = `
+
+                                <strong>
+                                    Creador:
+                                </strong>
+
+                                ${escapeHtml(nombreCompleto || usuarioCreador || "No disponible")}
+
+                                <br>
+
+                            `;
+                }
+
+                let observacion = "";
+
+                if (esJefe) {
+                    const observacionJefe =
+                        solicitud.ObservacionJefe ?? solicitud.observacionJefe ?? "";
+
+                    if (observacionJefe) {
+                        observacion = `
+
+                                    <br>
+
+                                    <strong>
+                                        Observación:
+                                    </strong>
+
+                                    ${escapeHtml(observacionJefe)}
+
+                                `;
+                    }
+                }
+
+                let estadoGeneralHTML = "";
+
+                if (esJefe) {
+                    estadoGeneralHTML = `
+
+                                <br>
+
+                                <strong>
+                                    Estado general:
+                                </strong>
+
+                                ${escapeHtml(estadoGeneral)}
+
+                            `;
+                }
+
+                const numeroSolicitud = Number(id);
+
+                const botonTrazabilidad =
+                    numeroSolicitud > 0
+                        ? `
+
+                                    <button
+                                        type="button"
+                                        class="btn-trazabilidad"
+                                        onclick="abrirTrazabilidad(event, ${numeroSolicitud})"
+                                    >
+
+                                        📊 Ver trazabilidad
+
+                                    </button>
+
+                                `
+                        : "";
+
+                return `
+
+                            <div class="solicitud-item">
+
+
+                                <div class="solicitud-item-cabecera">
+
+
+                                    <div class="solicitud-numero">
+
+                                        Solicitud #
+
+                                        ${escapeHtml(String(id))}
+
+                                    </div>
+
+
+                                    <span
+                                        class="estado ${claseEstado}"
+                                    >
+
+                                        ${escapeHtml(textoEstado)}
+
+                                    </span>
+
+
+                                </div>
+
+
+                                <div class="solicitud-info">
+
+
+                                    ${informacionCreador}
+
+
+                                    <strong>
+                                        Cliente:
+                                    </strong>
+
+                                    ${escapeHtml(cliente)}
+
+                                    <br>
+
+
+                                    <strong>
+                                        Canal:
+                                    </strong>
+
+                                    ${escapeHtml(canal)}
+
+                                    <br>
+
+
+                                    <strong>
+                                        Fecha de solicitud:
+                                    </strong>
+
+                                    ${formatearFecha(fechaSolicitud)}
+
+                                    <br>
+
+
+                                    <strong>
+                                        Tipo de solicitud:
+                                    </strong>
+
+                                    ${escapeHtml(tipoSolicitud)}
+
+                                    <br>
+
+
+                                    <strong>
+                                        Detalle:
+                                    </strong>
+
+                                    ${escapeHtml(detalleSolicitud)}
+
+
+                                    ${
+                                        esJefe
+                                            ? `
+
+                                            <br>
+
+                                            <strong>
+                                                Estado de aprobación del jefe:
+                                            </strong>
+
+                                            ${escapeHtml(estadoJefe)}
+
+                                            ${estadoGeneralHTML}
+
+                                            ${observacion}
+
+                                        `
+                                            : ""
+                                    }
+
+
+                                    ${botonTrazabilidad}
+
+                                    ${enlaceAdjunto(numeroSolicitud, solicitud, "")}
+
+
+                                </div>
+
+
+                            </div>
+
+                        `;
+            }
+
+            /* =========================================
+           ABRIR TRAZABILIDAD
+        ========================================= */
+
+            function abrirTrazabilidad(event, id) {
+                if (event) {
+                    event.preventDefault();
+
+                    event.stopPropagation();
+                }
+
+                const numero = Number(id);
+
+                if (!numero || isNaN(numero)) {
+                    return;
+                }
+
+                window.location.href = `trazabilidad.html?id=${encodeURIComponent(numero)}`;
+            }
+
+            /* =========================================
+           FORMATEAR FECHA
+        ========================================= */
+
+            function formatearFecha(fecha) {
+                if (!fecha) {
+                    return "No disponible";
+                }
+
+                const fechaObjeto = new Date(fecha);
+
+                if (isNaN(fechaObjeto.getTime())) {
+                    return escapeHtml(String(fecha));
+                }
+
+                return fechaObjeto.toLocaleDateString("es-CO", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                });
+            }
+        </script>
+    </body>
+</html>

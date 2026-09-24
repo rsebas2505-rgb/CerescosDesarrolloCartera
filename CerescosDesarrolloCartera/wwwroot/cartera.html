@@ -1,0 +1,1080 @@
+﻿<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Cartera - Solicitud de cartera</title>
+
+        <link rel="stylesheet" href="css/cartera.css" />
+    </head>
+
+    <body>
+        <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+        <header>
+            <div class="logo-area">
+                <a href="index.html" class="logo" title="Volver al menú inicial">
+                    <img src="img/logo-cerescos.png" alt="Cerescos" />
+                </a>
+
+                <div class="titulo-header"> Solicitud de cartera </div>
+            </div>
+
+            <div class="usuario-header">
+                <div class="datos-usuario">
+                    <div class="nombre-usuario" id="nombreUsuario"> Usuario </div>
+
+                    <div class="rol-usuario" id="rolUsuario"> Cartera </div>
+                </div>
+
+                <div class="avatar" id="avatarUsuario"> U </div>
+
+                <button class="btn-cerrar" onclick="cerrarSesion()"> Cerrar sesión </button>
+            </div>
+        </header>
+
+        <!-- =====================================================
+         CONTENIDO
+    ===================================================== -->
+
+        <main class="contenedor">
+            <h1 class="titulo-principal">
+                Solicitudes de
+                <span>Cartera</span>
+            </h1>
+
+            <p class="subtitulo">
+                Revisa y gestiona las solicitudes según su estado de aprobación.
+            </p>
+
+            <!-- =================================================
+             ENCABEZADO DEL MÓDULO
+        ================================================== -->
+
+            <div class="encabezado-modulo">
+                <div class="modulo-info">
+                    <div class="modulo-icono"> ✓ </div>
+
+                    <div class="modulo-texto">
+                        <h2> Bandeja de revisión </h2>
+
+                        <p>
+                            Consulta las solicitudes aprobadas o rechazadas por los jefes y gestiona
+                            las pendientes de Cartera.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="estado-modulo">
+                    <span class="estado-punto"></span>
+
+                    Solicitudes de Cartera
+                </div>
+            </div>
+
+            <!-- =================================================
+             FILTROS
+        ================================================== -->
+
+            <div class="filtros">
+                <button class="btn-filtro activo" onclick="filtrarSolicitudes('Todas', this)">
+                    Todas
+                </button>
+
+                <button class="btn-filtro" onclick="filtrarSolicitudes('Depósitos', this)">
+                    Depósitos
+                </button>
+
+                <button class="btn-filtro" onclick="filtrarSolicitudes('Cadenas', this)">
+                    Cadenas
+                </button>
+            </div>
+
+            <!-- =================================================
+             LISTA
+        ================================================== -->
+
+            <div id="listaSolicitudes">
+                <div class="mensaje">
+                    <div class="mensaje-icono"> ⏳ </div>
+
+                    <div class="cargando"> Cargando solicitudes... </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+        <footer> Cerescos © 2026 - Sistema de Solicitud de Cartera </footer>
+
+        <!-- =====================================================
+         MODAL DE DECISIÓN
+         Sirve tanto para aprobar como para rechazar:
+         en ambos casos se puede dejar una observación.
+    ===================================================== -->
+
+        <div class="modal" id="modalDecision">
+            <div class="modal-contenido">
+                <h3 id="modalTitulo"> Rechazar solicitud </h3>
+
+                <p id="modalDescripcion"> Debes indicar la observación o motivo del rechazo. </p>
+
+                <textarea
+                    id="modalObservacion"
+                    placeholder="Escribe la observación..."
+                ></textarea>
+
+                <div class="modal-acciones">
+                    <button class="btn-modal-cancelar" onclick="cerrarModal()"> Cancelar </button>
+
+                    <button
+                        class="btn-modal-confirmar"
+                        id="modalConfirmar"
+                        onclick="confirmarDecision()"
+                    >
+                        Confirmar rechazo
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/comun.js"></script>
+
+        <script>
+            // =====================================================
+            // VARIABLES
+            // =====================================================
+
+            let usuario = null;
+
+            let usuarioId = null;
+
+            let solicitudes = [];
+
+            let filtroActual = "Todas";
+
+            let solicitudEnModal = null;
+
+            let accionEnModal = null;
+
+            // =====================================================
+            // INICIO
+            // =====================================================
+
+            document.addEventListener("DOMContentLoaded", iniciar);
+
+            async function iniciar() {
+                // -------------------------------------------------
+                // OBTENER USUARIO
+                // -------------------------------------------------
+
+                usuario = await obtenerUsuarioSesion();
+
+                if (!usuario) {
+                    return;
+                }
+
+                // -------------------------------------------------
+                // ID
+                // -------------------------------------------------
+
+                usuarioId = usuario.Id || usuario.id;
+
+                // -------------------------------------------------
+                // NOMBRE
+                // -------------------------------------------------
+
+                const nombre =
+                    usuario.UsuarioNombre ||
+                    usuario.usuarioNombre ||
+                    usuario.Nombre ||
+                    usuario.nombre ||
+                    "Usuario";
+
+                const apellido = usuario.Apellido || usuario.apellido || "";
+
+                // -------------------------------------------------
+                // ROL
+                // -------------------------------------------------
+
+                const rolOriginal = usuario.Rol || usuario.rol || "";
+
+                // -------------------------------------------------
+                // MOSTRAR USUARIO
+                // -------------------------------------------------
+
+                document.getElementById("nombreUsuario").textContent =
+                    `${nombre} ${apellido}`.trim();
+
+                document.getElementById("rolUsuario").textContent = rolOriginal || "Sin rol";
+
+                // -------------------------------------------------
+                // AVATAR
+                // -------------------------------------------------
+
+                const primeraLetra = nombre.charAt(0).toUpperCase() || "U";
+
+                document.getElementById("avatarUsuario").textContent = primeraLetra;
+
+                // -------------------------------------------------
+                // NORMALIZAR ROL
+                // -------------------------------------------------
+
+                const rolNormalizado = normalizarTexto(rolOriginal);
+
+                console.log("=================================");
+
+                console.log("USUARIO CARGADO");
+
+                console.log(usuario);
+
+                console.log("ID:", usuarioId);
+
+                console.log("Rol original:", rolOriginal);
+
+                console.log("Rol normalizado:", rolNormalizado);
+
+                console.log("=================================");
+
+                // -------------------------------------------------
+                // VALIDAR ROL
+                // -------------------------------------------------
+
+                if (rolNormalizado !== "cartera" && rolNormalizado !== "persona de cartera") {
+                    alert(
+                        "No tienes permisos para acceder al módulo de Cartera.\n\n" +
+                            "Rol detectado: " +
+                            (rolOriginal || "Sin rol"),
+                    );
+
+                    window.location.href = "index.html";
+
+                    return;
+                }
+
+                // -------------------------------------------------
+                // VALIDAR ID
+                // -------------------------------------------------
+
+                if (!usuarioId) {
+                    alert("No se encontró el identificador del usuario.");
+
+                    window.location.href = "login.html";
+
+                    return;
+                }
+
+                // -------------------------------------------------
+                // CARGAR SOLICITUDES
+                // -------------------------------------------------
+
+                await cargarSolicitudes();
+            }
+
+            // =====================================================
+            // NORMALIZAR TEXTO
+            // =====================================================
+
+            function normalizarTexto(texto) {
+                return String(texto || "")
+                    .trim()
+                    .replace(/\s+/g, " ")
+                    .toLowerCase();
+            }
+
+            // =====================================================
+            // CARGAR SOLICITUDES
+            // =====================================================
+
+            async function cargarSolicitudes() {
+                const lista = document.getElementById("listaSolicitudes");
+
+                lista.innerHTML = `
+
+                    <div class="mensaje">
+
+                        <div class="mensaje-icono">
+                            ⏳
+                        </div>
+
+                        <div class="cargando">
+                            Cargando solicitudes...
+                        </div>
+
+                    </div>
+
+                `;
+
+                try {
+                    const respuesta = await fetch(
+                        `/api/Solicitudes/cartera?usuarioId=${usuarioId}`,
+                    );
+
+                    if (!respuesta.ok) {
+                        const texto = await respuesta.text();
+
+                        console.error("Error del servidor:", respuesta.status, texto);
+
+                        lista.innerHTML = `
+
+                            <div class="mensaje">
+
+                                <div class="mensaje-icono">
+                                    ⚠️
+                                </div>
+
+                                <strong>
+                                    No fue posible cargar las solicitudes.
+                                </strong>
+
+                                <p style="margin-top:10px;">
+                                    Error ${respuesta.status}
+                                </p>
+
+                            </div>
+
+                        `;
+
+                        return;
+                    }
+
+                    const datos = await respuesta.json();
+
+                    console.log("Respuesta Cartera:", datos);
+
+                    solicitudes = datos.solicitudes || [];
+
+                    renderizarSolicitudes();
+                } catch (error) {
+                    console.error("Error cargando solicitudes:", error);
+
+                    lista.innerHTML = `
+
+                        <div class="mensaje">
+
+                            <div class="mensaje-icono">
+                                ❌
+                            </div>
+
+                            <strong>
+                                No se pudo conectar con el servidor.
+                            </strong>
+
+                            <p style="margin-top:10px;">
+                                Verifica que la aplicación esté ejecutándose.
+                            </p>
+
+                        </div>
+
+                    `;
+                }
+            }
+
+            // =====================================================
+            // FILTRAR SOLICITUDES
+            // =====================================================
+
+            function filtrarSolicitudes(filtro, boton) {
+                filtroActual = filtro;
+
+                document.querySelectorAll(".btn-filtro").forEach((btn) => {
+                    btn.classList.remove("activo");
+                });
+
+                if (boton) {
+                    boton.classList.add("activo");
+                }
+
+                renderizarSolicitudes();
+            }
+
+            // =====================================================
+            // RENDERIZAR SOLICITUDES
+            // =====================================================
+
+            function renderizarSolicitudes() {
+                const lista = document.getElementById("listaSolicitudes");
+
+                let solicitudesFiltradas = solicitudes;
+
+                if (filtroActual !== "Todas") {
+                    solicitudesFiltradas = solicitudes.filter((solicitud) => {
+                        return normalizarTexto(solicitud.canal) === normalizarTexto(filtroActual);
+                    });
+                }
+
+                // -------------------------------------------------
+                // SIN SOLICITUDES
+                // -------------------------------------------------
+
+                if (solicitudesFiltradas.length === 0) {
+                    lista.innerHTML = `
+
+                        <div class="mensaje">
+
+                            <div class="mensaje-icono">
+                                📭
+                            </div>
+
+                            <strong>
+                                No hay solicitudes.
+                            </strong>
+
+                            <p style="margin-top:10px;">
+
+                                ${
+                                    filtroActual === "Todas"
+                                        ? "Actualmente no hay solicitudes disponibles para revisión o consulta."
+                                        : "No hay solicitudes para el canal " + filtroActual + "."
+                                }
+
+                            </p>
+
+                        </div>
+
+                    `;
+
+                    return;
+                }
+
+                // -------------------------------------------------
+                // CARDS
+                // -------------------------------------------------
+
+                lista.innerHTML = solicitudesFiltradas.map(crearSolicitudHTML).join("");
+            }
+
+            // =====================================================
+            // CREAR CARD
+            // =====================================================
+
+            function crearSolicitudHTML(solicitud) {
+                const id = solicitud.id;
+
+                const canal = solicitud.canal || "Sin canal";
+
+                // -------------------------------------------------
+                // CORREGIR NOMBRE DEL CREADOR
+                // -------------------------------------------------
+
+                const nombreCreador =
+                    `${solicitud.creadorNombre || ""} ${solicitud.creadorApellido || ""}`.trim();
+
+                const creador = nombreCreador || solicitud.creadorUsuario || "Sin información";
+
+                const cliente = solicitud.nombreCliente || "Sin información";
+
+                const fecha = formatearSoloFecha(solicitud.fechaSolicitud);
+
+                const fechaJefe = formatearFecha(solicitud.fechaAprobacionJefe);
+
+                const tipo = solicitud.tipoSolicitud || "Sin información";
+
+                const detalle = solicitud.detalleSolicitud || "Sin información";
+
+                const observacionJefe = solicitud.observacionJefe || "Sin observación";
+
+                const jefe =
+                    solicitud.nombreJefe ||
+                    solicitud.jefeNombre ||
+                    solicitud.jefeUsuario ||
+                    "Jefe responsable";
+
+                const estadoJefe = normalizarTexto(solicitud.estadoJefe);
+
+                const estadoCartera = normalizarTexto(solicitud.estadoCartera);
+
+                const estadoGeneral = normalizarTexto(solicitud.estadoGeneral);
+
+                // -------------------------------------------------
+                // DETERMINAR SI CARTERA PUEDE ACTUAR
+                // -------------------------------------------------
+
+                const puedeActuar = estadoJefe === "aprobado" && estadoCartera === "pendiente";
+
+                // -------------------------------------------------
+                // INFORMACIÓN DEL ESTADO DE CARTERA
+                // -------------------------------------------------
+
+                let estadoCarteraHTML = "";
+
+                if (estadoJefe === "rechazado") {
+                    estadoCarteraHTML = `
+
+                        <div class="seccion-cartera rechazado">
+
+                            <div class="titulo-estado-cartera">
+                                ✕ Solicitud rechazada por el jefe
+                            </div>
+
+                            <div class="texto-estado-cartera">
+
+                                El jefe responsable rechazó esta solicitud.
+                                Cartera puede consultar el registro, pero no requiere ninguna acción.
+
+                            </div>
+
+                        </div>
+
+                    `;
+                } else if (estadoCartera === "pendiente") {
+                    estadoCarteraHTML = `
+
+                        <div class="seccion-cartera pendiente">
+
+                            <div class="titulo-estado-cartera">
+                                ⏳ Pendiente de revisión por Cartera
+                            </div>
+
+                            <div class="texto-estado-cartera">
+
+                                La solicitud fue aprobada por el jefe responsable y está pendiente de decisión por Cartera.
+
+                            </div>
+
+                        </div>
+
+                    `;
+                } else if (estadoCartera === "aprobado") {
+                    const observacionCartera = solicitud.observacionCartera || "Sin observación";
+
+                    const fechaCartera = formatearFecha(solicitud.fechaAprobacionCartera);
+
+                    estadoCarteraHTML = `
+
+                        <div class="seccion-cartera aprobado">
+
+                            <div class="titulo-estado-cartera">
+                                ✓ Solicitud aprobada por Cartera
+                            </div>
+
+                            <div class="texto-estado-cartera">
+
+                                Fecha de aprobación:
+                                ${escapeHtml(fechaCartera)}
+
+                                <br><br>
+
+                                <strong>
+                                    Observación:
+                                </strong>
+
+                                ${escapeHtml(observacionCartera)}
+
+                            </div>
+
+                        </div>
+
+                    `;
+                } else if (estadoCartera === "rechazado") {
+                    const observacionCartera = solicitud.observacionCartera || "Sin observación";
+
+                    const fechaCartera = formatearFecha(solicitud.fechaAprobacionCartera);
+
+                    estadoCarteraHTML = `
+
+                        <div class="seccion-cartera rechazado">
+
+                            <div class="titulo-estado-cartera">
+                                ✕ Solicitud rechazada por Cartera
+                            </div>
+
+                            <div class="texto-estado-cartera">
+
+                                Fecha de rechazo:
+                                ${escapeHtml(fechaCartera)}
+
+                                <br><br>
+
+                                <strong>
+                                    Observación:
+                                </strong>
+
+                                ${escapeHtml(observacionCartera)}
+
+                            </div>
+
+                        </div>
+
+                    `;
+                } else {
+                    estadoCarteraHTML = `
+
+                        <div class="seccion-cartera pendiente">
+
+                            <div class="titulo-estado-cartera">
+                                Estado de Cartera
+                            </div>
+
+                            <div class="texto-estado-cartera">
+
+                                ${escapeHtml(solicitud.estadoCartera || "Sin estado")}
+
+                            </div>
+
+                        </div>
+
+                    `;
+                }
+
+                // -------------------------------------------------
+                // ACCIONES
+                // -------------------------------------------------
+
+                let accionesHTML = "";
+
+                if (puedeActuar) {
+                    accionesHTML = `
+
+                        <div class="acciones">
+
+                            <button
+                                class="btn-aprobar"
+                                onclick="aprobarSolicitud(${id})">
+
+                                ✓ Aprobar
+
+                            </button>
+
+
+                            <button
+                                class="btn-rechazar"
+                                onclick="abrirModalRechazo(${id})">
+
+                                ✕ Rechazar
+
+                            </button>
+
+                        </div>
+
+                    `;
+                }
+
+                // -------------------------------------------------
+                // CARD COMPLETA
+                // -------------------------------------------------
+
+                return `
+
+                    <div class="solicitud-card">
+
+
+                        <div class="encabezado-card">
+
+
+                            <div class="numero-solicitud">
+
+                                Solicitud #${id}
+
+                            </div>
+
+
+                            <div class="canal">
+
+                                ${escapeHtml(canal)}
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="informacion">
+
+
+                            <div class="campo">
+
+                                <div class="campo-titulo">
+                                    Usuario creador
+                                </div>
+
+                                <div class="campo-valor">
+
+                                    ${escapeHtml(creador)}
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="campo">
+
+                                <div class="campo-titulo">
+                                    Nombre del cliente
+                                </div>
+
+                                <div class="campo-valor">
+
+                                    ${escapeHtml(cliente)}
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="campo">
+
+                                <div class="campo-titulo">
+                                    Fecha de solicitud
+                                </div>
+
+                                <div class="campo-valor">
+
+                                    ${escapeHtml(fecha)}
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="campo">
+
+                                <div class="campo-titulo">
+                                    Tipo de solicitud
+                                </div>
+
+                                <div class="campo-valor">
+
+                                    ${escapeHtml(tipo)}
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="campo campo-completo">
+
+                                <div class="campo-titulo">
+                                    Detalle de la solicitud
+                                </div>
+
+                                <div class="campo-valor">
+
+                                    ${escapeHtml(detalle)}
+
+                                </div>
+
+                            </div>
+
+
+                            ${
+                                tieneAdjunto(solicitud)
+                                    ? `
+                            <div class="campo campo-completo">
+
+                                <div class="campo-titulo">
+                                    Documento adjunto
+                                </div>
+
+                                <div class="campo-valor">
+
+                                    ${enlaceAdjunto(id, solicitud, "")}
+
+                                </div>
+
+                            </div>
+                            `
+                                    : ""
+                            }
+
+
+                            <div class="campo campo-completo">
+
+                                ${lineaTiempoHTML(solicitud)}
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- APROBACIÓN DEL JEFE -->
+
+                        <div class="seccion-jefe">
+
+
+                            <h4>
+                                ${
+                                    estadoJefe === "aprobado"
+                                        ? "✓ Aprobación del jefe"
+                                        : "✕ Decisión del jefe"
+                                }
+                            </h4>
+
+
+
+                            <div class="campo">
+
+                                <div class="campo-titulo">
+                                    Jefe responsable
+                                </div>
+
+                                <div class="campo-valor">
+
+                                    ${escapeHtml(jefe)}
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div
+                                style="
+                                    margin-top:10px;
+                                    font-size:13px;
+                                    color:#555;
+                                "
+                            >
+
+                                <strong>
+                                    Estado del jefe:
+                                </strong>
+
+                                ${escapeHtml(solicitud.estadoJefe || "Sin estado")}
+
+                            </div>
+
+
+
+                            <div
+                                style="
+                                    margin-top:8px;
+                                    font-size:13px;
+                                    color:#555;
+                                "
+                            >
+
+                                <strong>
+                                    Fecha de decisión:
+                                </strong>
+
+                                ${escapeHtml(fechaJefe)}
+
+                            </div>
+
+
+
+                            <div class="observacion">
+
+                                <strong>
+                                    Observación:
+                                </strong>
+
+                                ${escapeHtml(observacionJefe)}
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ESTADO CARTERA -->
+
+                        ${estadoCarteraHTML}
+
+
+
+                        <!-- ACCIONES -->
+
+                        ${accionesHTML}
+
+
+                    </div>
+
+                `;
+            }
+
+            // =====================================================
+            // APROBAR SOLICITUD
+            // =====================================================
+            // Abre el modal para que Cartera deje su observación
+            // antes de aprobar. La observación es opcional.
+            // =====================================================
+
+            function aprobarSolicitud(id) {
+                abrirModalDecision(id, "aprobar");
+            }
+
+            // =====================================================
+            // RECHAZAR SOLICITUD
+            // =====================================================
+            // Mismo modal, pero aquí la observación es obligatoria.
+            // =====================================================
+
+            function abrirModalRechazo(id) {
+                abrirModalDecision(id, "rechazar");
+            }
+
+            // =====================================================
+            // ABRIR MODAL
+            // =====================================================
+
+            function abrirModalDecision(id, accion) {
+                solicitudEnModal = id;
+
+                accionEnModal = accion;
+
+                const esAprobar = accion === "aprobar";
+
+                document.getElementById("modalTitulo").textContent = esAprobar
+                    ? "Aprobar solicitud"
+                    : "Rechazar solicitud";
+
+                document.getElementById("modalDescripcion").textContent = esAprobar
+                    ? "Puedes dejar una observación sobre la aprobación (opcional)."
+                    : "Debes indicar la observación o motivo del rechazo.";
+
+                const boton = document.getElementById("modalConfirmar");
+
+                boton.textContent = esAprobar ? "Confirmar aprobación" : "Confirmar rechazo";
+
+                boton.classList.toggle("btn-modal-aprobar", esAprobar);
+
+                document
+                    .querySelector("#modalDecision .modal-contenido")
+                    .classList.toggle("aprobando", esAprobar);
+
+                const texto = document.getElementById("modalObservacion");
+
+                texto.value = "";
+
+                texto.placeholder = esAprobar
+                    ? "Escribe la observación (opcional)..."
+                    : "Escribe la observación...";
+
+                document.getElementById("modalDecision").style.display = "flex";
+
+                setTimeout(() => {
+                    texto.focus();
+                }, 100);
+            }
+
+            // =====================================================
+            // CERRAR MODAL
+            // =====================================================
+
+            function cerrarModal() {
+                solicitudEnModal = null;
+
+                accionEnModal = null;
+
+                document.getElementById("modalDecision").style.display = "none";
+
+                document.getElementById("modalObservacion").value = "";
+            }
+
+            // =====================================================
+            // CONFIRMAR LA DECISIÓN
+            // =====================================================
+
+            async function confirmarDecision() {
+                if (!solicitudEnModal) {
+                    return;
+                }
+
+                const esAprobar = accionEnModal === "aprobar";
+
+                const observacion = document.getElementById("modalObservacion").value.trim();
+
+                if (!esAprobar && !observacion) {
+                    alert("Debes escribir una observación para rechazar la solicitud.");
+
+                    return;
+                }
+
+                const ruta = esAprobar ? "aprobar-cartera" : "rechazar-cartera";
+
+                try {
+                    const respuesta = await fetch(
+                        `/api/Solicitudes/${solicitudEnModal}/${ruta}`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+
+                            body: JSON.stringify({
+                                UsuarioId: usuarioId,
+
+                                Observacion: observacion,
+                            }),
+                        },
+                    );
+
+                    const datos = await respuesta.json();
+
+                    if (!respuesta.ok) {
+                        alert(
+                            datos.mensaje ||
+                                datos.message ||
+                                (esAprobar
+                                    ? "No fue posible aprobar la solicitud."
+                                    : "No fue posible rechazar la solicitud."),
+                        );
+
+                        return;
+                    }
+
+                    cerrarModal();
+
+                    alert(
+                        esAprobar
+                            ? "Solicitud aprobada correctamente."
+                            : "Solicitud rechazada correctamente.",
+                    );
+
+                    await cargarSolicitudes();
+                } catch (error) {
+                    console.error("Error procesando la solicitud:", error);
+
+                    alert("No fue posible conectar con el servidor.");
+                }
+            }
+
+            // =====================================================
+            // FORMATEAR FECHA
+            // =====================================================
+
+            function formatearFecha(fecha) {
+                if (!fecha) {
+                    return "Sin fecha";
+                }
+
+                const fechaObj = new Date(fecha);
+
+                if (isNaN(fechaObj.getTime())) {
+                    return String(fecha);
+                }
+
+                return fechaObj.toLocaleString("es-CO", {
+                    dateStyle: "short",
+                    timeStyle: "short",
+                });
+            }
+
+            // =====================================================
+            // CERRAR MODAL AL HACER CLICK AFUERA
+            // =====================================================
+
+            document.getElementById("modalDecision").addEventListener("click", function (event) {
+                if (event.target === this) {
+                    cerrarModal();
+                }
+            });
+        </script>
+    </body>
+</html>

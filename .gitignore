@@ -1,0 +1,40 @@
+## Visual Studio / .NET
+.vs/
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.rsuser
+*.cache
+*.log
+TestResults/
+packages/
+*.nupkg
+PublishProfiles/
+*.pubxml
+*.pubxml.user
+*.publish.xml
+
+## Configuracion local / secretos
+appsettings.*.local.json
+secrets.json
+*.env
+
+## Archivos subidos por los usuarios en ejecucion (no versionar)
+CerescosDesarrolloCartera/Adjuntos/*
+!CerescosDesarrolloCartera/Adjuntos/.gitkeep
+
+## Bases de datos y respaldos
+*.mdf
+*.ldf
+*.bak
+*.mwb.bak
+
+## Otros
+*.zip
+Thumbs.db
+.DS_Store

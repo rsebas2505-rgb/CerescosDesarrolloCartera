@@ -1,0 +1,1342 @@
+﻿* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --rojo: #c40046;
+    --rojo-oscuro: #a9003c;
+    --rojo-claro: #fff3f7;
+    --rojo-suave: #fde8f0;
+    --azul: #26384d;
+    --azul-2: #334a61;
+    --azul-suave: #53677b;
+    --gris: #748394;
+    --gris-claro: #8b98a5;
+    --fondo: #f4f6f8;
+    --blanco: #ffffff;
+    --borde: #e2e8ed;
+    --borde-suave: #edf1f4;
+    --verde: #198754;
+    --verde-claro: #edf9f2;
+    --rojo-rechazado: #c62828;
+    --rojo-rechazado-claro: #fff1f1;
+    --sombra-header: 0 8px 30px rgba(64, 16, 38, 0.18);
+    --sombra-suave: 0 8px 28px rgba(30, 50, 70, 0.065);
+    --sombra-card: 0 14px 38px rgba(30, 50, 70, 0.075);
+    --sombra-hover: 0 20px 48px rgba(30, 50, 70, 0.12);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at 3% 5%, rgba(196, 0, 70, 0.055), transparent 23%),
+        radial-gradient(circle at 97% 95%, rgba(38, 56, 77, 0.055), transparent 28%), var(--fondo);
+    color: var(--azul);
+    min-height: 100vh;
+}
+
+/* =====================================================
+           HEADER
+        ===================================================== */
+
+header {
+    min-height: 92px;
+    background: linear-gradient(115deg, #b90042 0%, #c40046 45%, #d0004c 72%, #a9003c 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6.5%;
+    box-shadow: var(--sombra-header);
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    width: 440px;
+    height: 440px;
+    right: -180px;
+    top: -275px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+header::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 42%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.055));
+    pointer-events: none;
+}
+
+/* =====================================================
+           LOGO
+        ===================================================== */
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    position: relative;
+    z-index: 2;
+}
+
+
+
+.titulo-header {
+    font-size: 18px;
+    font-weight: 600;
+    border-left: 1px solid rgba(255, 255, 255, 0.45);
+    padding-left: 22px;
+}
+
+/* =====================================================
+           USUARIO
+        ===================================================== */
+
+.usuario-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    position: relative;
+    z-index: 2;
+}
+
+.datos-usuario {
+    text-align: right;
+    line-height: 1.25;
+}
+
+.nombre-usuario {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.rol-usuario {
+    font-size: 12px;
+    opacity: 0.88;
+    margin-top: 4px;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
+    color: var(--rojo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 19px;
+    box-shadow: 0 6px 17px rgba(0, 0, 0, 0.16);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.btn-salir {
+    height: 43px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    color: white;
+    padding: 0 17px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 7px;
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.btn-salir:hover {
+    background: white;
+    color: var(--rojo);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+}
+
+.btn-salir:active {
+    transform: translateY(0);
+}
+
+/* =====================================================
+           CONTENIDO
+        ===================================================== */
+
+main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 52px 25px 80px;
+}
+
+/* =====================================================
+           CABECERA PAGINA
+        ===================================================== */
+
+.encabezado-pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.etiqueta {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    border: 1px solid rgba(196, 0, 70, 0.1);
+    border-radius: 30px;
+    padding: 8px 14px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.15px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 13px rgba(196, 0, 70, 0.04);
+}
+
+.etiqueta::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--rojo);
+    box-shadow: 0 0 0 4px rgba(196, 0, 70, 0.1);
+    animation: pulso 2s infinite;
+}
+
+.titulo-principal {
+    color: var(--azul);
+    font-size: 40px;
+    line-height: 1.12;
+    letter-spacing: -1.2px;
+    margin-bottom: 9px;
+}
+
+.titulo-principal span {
+    color: var(--rojo);
+}
+
+.subtitulo {
+    color: var(--gris);
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 720px;
+}
+
+.indicador-aprobaciones {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    padding: 13px 16px;
+    box-shadow: 0 7px 22px rgba(30, 50, 70, 0.055);
+    color: var(--azul-suave);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.indicador-aprobaciones:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 11px 27px rgba(30, 50, 70, 0.09);
+}
+
+.indicador-punto {
+    width: 9px;
+    height: 9px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--rojo);
+    box-shadow: 0 0 0 4px rgba(196, 0, 70, 0.1);
+    animation: pulso 2s infinite;
+}
+
+@keyframes pulso {
+    0%,
+    100% {
+        box-shadow: 0 0 0 4px rgba(196, 0, 70, 0.1);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px rgba(196, 0, 70, 0.035);
+    }
+}
+
+/* =====================================================
+           INFORMACION JEFE
+        ===================================================== */
+
+.info-jefe {
+    background: linear-gradient(110deg, #ffffff, #fffafd);
+    border-radius: 19px;
+    padding: 23px 27px;
+    margin-bottom: 20px;
+    box-shadow: var(--sombra-suave);
+    border: 1px solid #eadde3;
+    border-left: 5px solid var(--rojo);
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.info-jefe:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 13px 35px rgba(30, 50, 70, 0.085);
+}
+
+.info-jefe::before {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    right: -75px;
+    top: -100px;
+    background: rgba(196, 0, 70, 0.035);
+}
+
+.info-jefe::after {
+    content: "✓";
+    position: absolute;
+    right: 26px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+    box-shadow: inset 0 0 0 1px rgba(196, 0, 70, 0.05);
+}
+
+.info-jefe h3 {
+    color: var(--rojo);
+    margin-bottom: 7px;
+    font-size: 17px;
+    position: relative;
+    z-index: 1;
+}
+
+.info-jefe p {
+    color: #68798a;
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 850px;
+    position: relative;
+    z-index: 1;
+}
+
+/* =====================================================
+           FILTROS
+        ===================================================== */
+
+.filtros-solicitudes {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 17px;
+    padding: 13px;
+    margin-bottom: 28px;
+    box-shadow: 0 7px 22px rgba(30, 50, 70, 0.045);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filtros-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--azul);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.55px;
+    padding-left: 5px;
+}
+
+.filtros-titulo-icono {
+    width: 31px;
+    height: 31px;
+    border-radius: 9px;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.botones-filtro {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.btn-filtro {
+    border: 1px solid var(--borde);
+    background: #f8fafb;
+    color: var(--azul-suave);
+    border-radius: 10px;
+    min-height: 38px;
+    padding: 0 15px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-filtro:hover {
+    background: white;
+    border-color: #d1dbe2;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 13px rgba(30, 50, 70, 0.055);
+}
+
+.btn-filtro.activo {
+    background: var(--rojo);
+    color: white;
+    border-color: var(--rojo);
+    box-shadow: 0 6px 15px rgba(196, 0, 70, 0.17);
+}
+
+.contador-filtro {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    margin-left: 5px;
+    border-radius: 20px;
+    background: rgba(38, 56, 77, 0.08);
+    font-size: 10px;
+}
+
+.btn-filtro.activo .contador-filtro {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* =====================================================
+           ESTADOS GENERALES
+        ===================================================== */
+
+.mensaje,
+.cargando {
+    background: white;
+    border-radius: 20px;
+    padding: 55px 30px;
+    text-align: center;
+    box-shadow: var(--sombra-suave);
+    color: #778594;
+    border: 1px solid var(--borde);
+    animation: aparecer 0.35s ease;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mensaje {
+    margin-top: 20px;
+}
+
+.mensaje .icono {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 20px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--rojo-claro), #fff8fb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: inset 0 0 0 1px rgba(196, 0, 70, 0.05);
+}
+
+.mensaje h3 {
+    color: var(--azul);
+    margin-bottom: 8px;
+    font-size: 19px;
+}
+
+.mensaje p {
+    font-size: 13px;
+    line-height: 1.65;
+    max-width: 600px;
+    margin: auto;
+}
+
+/* =====================================================
+           CARGANDO
+        ===================================================== */
+
+.cargando {
+    padding: 50px 35px;
+}
+
+.spinner {
+    width: 42px;
+    height: 42px;
+    border: 4px solid #eceff2;
+    border-top: 4px solid var(--rojo);
+    border-right: 4px solid rgba(196, 0, 70, 0.35);
+    border-radius: 50%;
+    animation: girar 0.9s linear infinite;
+    margin: 0 auto 17px;
+}
+
+.cargando p {
+    font-size: 13px;
+}
+
+@keyframes girar {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* =====================================================
+           CONTENEDOR SOLICITUDES
+        ===================================================== */
+
+.solicitudes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* =====================================================
+           TARJETA SOLICITUD
+        ===================================================== */
+
+.solicitud-card {
+    background: white;
+    border-radius: 21px;
+    box-shadow: var(--sombra-card);
+    overflow: hidden;
+    border: 1px solid var(--borde);
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
+    position: relative;
+    animation: aparecer 0.4s ease both;
+}
+
+.solicitud-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--rojo), #ec4b83);
+    z-index: 3;
+}
+
+.solicitud-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-hover);
+}
+
+/* =====================================================
+           CABECERA SOLICITUD
+        ===================================================== */
+
+.solicitud-header {
+    background: linear-gradient(110deg, #b90042, #c40046 52%, #ae003d);
+    color: white;
+    padding: 19px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.solicitud-header::before {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    right: -85px;
+    top: -105px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.solicitud-header::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 38%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.065));
+}
+
+.solicitud-header h2 {
+    font-size: 18px;
+    position: relative;
+    z-index: 2;
+    letter-spacing: -0.2px;
+}
+
+.estado {
+    background: white;
+    color: var(--rojo);
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 11px rgba(0, 0, 0, 0.09);
+}
+
+.estado.aprobado {
+    color: var(--verde);
+    background: #f2fff7;
+}
+
+.estado.rechazado {
+    color: var(--rojo-rechazado);
+    background: #fff4f4;
+}
+
+/* =====================================================
+           BODY
+        ===================================================== */
+
+.solicitud-body {
+    padding: 28px;
+}
+
+/* =====================================================
+           DATOS
+        ===================================================== */
+
+.datos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.dato {
+    background: linear-gradient(135deg, #fafbfc, #f7f9fa);
+    border-radius: 14px;
+    padding: 16px 17px;
+    border: 1px solid #e8edf1;
+    min-height: 73px;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dato:hover {
+    border-color: #d9e1e7;
+    background: white;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(30, 50, 70, 0.035);
+}
+
+.dato-completo {
+    grid-column: 1 / -1;
+}
+
+.dato label {
+    display: block;
+    color: #8a97a3;
+    font-size: 10px;
+    margin-bottom: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.65px;
+}
+
+.dato span {
+    color: var(--azul);
+    font-size: 14px;
+    word-break: break-word;
+    line-height: 1.55;
+}
+
+/* =====================================================
+           TIPOS
+        ===================================================== */
+
+.tipo-solicitud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tipo-tag {
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    border-radius: 20px;
+    padding: 7px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    border: 1px solid rgba(196, 0, 70, 0.08);
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.tipo-tag:hover {
+    transform: translateY(-1px);
+    background: var(--rojo-suave);
+    box-shadow: 0 4px 10px rgba(196, 0, 70, 0.07);
+}
+
+/* =====================================================
+           OBSERVACION
+        ===================================================== */
+
+.seccion-observacion {
+    margin-top: 4px;
+    border-top: 1px solid #e9edf0;
+    padding-top: 23px;
+}
+
+.seccion-observacion label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: var(--azul);
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.seccion-observacion label::before {
+    content: "✎";
+    width: 27px;
+    height: 27px;
+    border-radius: 8px;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    box-shadow: inset 0 0 0 1px rgba(196, 0, 70, 0.05);
+}
+
+.seccion-observacion textarea {
+    width: 100%;
+    min-height: 105px;
+    resize: vertical;
+    border: 1px solid #d8e0e6;
+    border-radius: 14px;
+    padding: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: var(--azul);
+    background: white;
+    outline: none;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.seccion-observacion textarea::placeholder {
+    color: #a1adb8;
+}
+
+.seccion-observacion textarea:hover {
+    border-color: #cbd5dc;
+}
+
+.seccion-observacion textarea:focus {
+    border-color: var(--rojo);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(196, 0, 70, 0.065);
+}
+
+.seccion-observacion textarea:disabled {
+    background: #f5f7f8;
+    cursor: not-allowed;
+}
+
+/* =====================================================
+           OBSERVACION HISTORICA
+        ===================================================== */
+
+.observacion-historica {
+    margin-top: 4px;
+    border-top: 1px solid #e9edf0;
+    padding-top: 21px;
+}
+
+.observacion-historica-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: var(--azul);
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.observacion-historica-titulo::before {
+    content: "✓";
+    width: 27px;
+    height: 27px;
+    border-radius: 8px;
+    background: var(--verde-claro);
+    color: var(--verde);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.observacion-historica.rechazada .observacion-historica-titulo::before {
+    content: "!";
+    background: var(--rojo-rechazado-claro);
+    color: var(--rojo-rechazado);
+}
+
+.observacion-historica-texto {
+    background: #f8fafb;
+    border: 1px solid #e3e9ed;
+    border-radius: 13px;
+    padding: 14px 16px;
+    color: var(--azul-suave);
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* =====================================================
+           INFORMACION HISTORICA
+        ===================================================== */
+
+.estado-historico {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 17px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #f8fafb;
+    border: 1px solid #e7edf1;
+    color: var(--gris);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.estado-historico strong {
+    color: var(--azul);
+}
+
+/* =====================================================
+           BOTONES
+        ===================================================== */
+
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 11px;
+    margin-top: 18px;
+}
+
+.btn {
+    border: none;
+    border-radius: 11px;
+    min-height: 46px;
+    padding: 0 25px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.btn-aprobar {
+    background: linear-gradient(135deg, #c40046, #a9003c);
+    color: white;
+    box-shadow: 0 7px 17px rgba(196, 0, 70, 0.18);
+}
+
+.btn-aprobar:hover {
+    background: linear-gradient(135deg, #d0004d, #a00039);
+    transform: translateY(-2px);
+    box-shadow: 0 11px 24px rgba(196, 0, 70, 0.25);
+}
+
+.btn-rechazar {
+    background: white;
+    color: var(--rojo);
+    border: 1px solid rgba(196, 0, 70, 0.55);
+}
+
+.btn-rechazar:hover {
+    background: var(--rojo-claro);
+    border-color: var(--rojo);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 17px rgba(196, 0, 70, 0.08);
+}
+
+.btn:active {
+    transform: translateY(0) !important;
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* =====================================================
+           RESPONSIVE 900
+        ===================================================== */
+
+@media (max-width: 900px) {
+    header {
+        padding: 0 4%;
+    }
+
+    .encabezado-pagina {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .indicador-aprobaciones {
+        align-self: flex-start;
+    }
+
+    .filtros-solicitudes {
+        align-items: flex-start;
+    }
+}
+
+/* =====================================================
+           RESPONSIVE 750
+        ===================================================== */
+
+@media (max-width: 750px) {
+    header {
+        min-height: auto;
+        padding: 17px 20px;
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .logo-container {
+        justify-content: center;
+    }
+
+    .titulo-header {
+        font-size: 16px;
+        padding-left: 15px;
+    }
+
+    .usuario-header {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .datos-usuario {
+        display: block;
+    }
+
+    main {
+        margin-top: 0;
+        padding: 35px 15px 55px;
+    }
+
+    .titulo-principal {
+        font-size: 32px;
+    }
+
+    .datos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dato-completo {
+        grid-column: auto;
+    }
+
+    .solicitud-header {
+        padding: 17px 19px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 11px;
+    }
+
+    .solicitud-body {
+        padding: 20px;
+    }
+
+    .acciones {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .info-jefe::after {
+        display: none;
+    }
+
+    .filtros-solicitudes {
+        flex-direction: column;
+    }
+
+    .filtros-titulo {
+        width: 100%;
+    }
+
+    .botones-filtro {
+        width: 100%;
+    }
+
+    .btn-filtro {
+        flex: 1;
+    }
+}
+
+/* =====================================================
+           RESPONSIVE 500
+        ===================================================== */
+
+@media (max-width: 500px) {
+
+
+    .titulo-header {
+        font-size: 14px;
+    }
+
+    .usuario-header {
+        justify-content: space-between;
+    }
+
+    .datos-usuario {
+        text-align: left;
+    }
+
+    .btn-salir {
+        margin-left: 0;
+        padding: 0 13px;
+    }
+
+    .titulo-principal {
+        font-size: 29px;
+    }
+
+    .subtitulo {
+        font-size: 14px;
+    }
+
+    .info-jefe {
+        padding: 20px;
+    }
+
+    .solicitud-body {
+        padding: 17px;
+    }
+
+    .solicitud-header h2 {
+        font-size: 16px;
+    }
+
+    .dato span {
+        font-size: 13px;
+    }
+
+    .botones-filtro {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .btn-filtro {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   LOGO CORPORATIVO
+   =========================================================
+   Imagen oficial sobre base blanca, porque el logo es rojo
+   con fondo transparente y el encabezado tambien es rojo.
+   Al hacer clic vuelve al menu inicial.
+========================================================= */
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 9px 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.13);
+    transition: transform 0.25s ease;
+}
+
+.logo:hover {
+    transform: scale(1.03);
+}
+
+.logo img {
+    display: block;
+    height: 34px;
+    width: auto;
+}
+
+@media (max-width: 600px) {
+    .logo {
+        padding: 7px 11px;
+    }
+
+    .logo img {
+        height: 26px;
+    }
+}
+
+/* =========================================================
+   ENLACE DEL DOCUMENTO ADJUNTO
+========================================================= */
+
+.btn-adjunto {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 6px;
+    padding: 9px 14px;
+    border: 1px solid #d9dee4;
+    border-radius: 9px;
+    background: #f7f8fa;
+    color: #26384d;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    word-break: break-all;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-adjunto:hover {
+    background: #eef1f4;
+    border-color: #c40046;
+    color: #c40046;
+}
+
+/* =========================================================
+   TRAZABILIDAD RESUMIDA DE LA SOLICITUD
+========================================================= */
+
+.linea-tiempo-solicitud {
+    margin-top: 6px;
+    padding: 16px 18px;
+    border: 1px solid #e5e9ee;
+    border-radius: 13px;
+    background: #fafbfc;
+}
+
+.linea-tiempo-titulo {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #68717c;
+    margin-bottom: 13px;
+}
+
+.etapas-solicitud {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.etapas-solicitud .etapa {
+    position: relative;
+    padding: 0 0 15px 22px;
+    border-left: 2px solid #e1e6ec;
+}
+
+.etapas-solicitud .etapa:last-child {
+    padding-bottom: 0;
+    border-left-color: transparent;
+}
+
+.etapas-solicitud .etapa::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #c9d2db;
+    border: 2px solid #fafbfc;
+}
+
+.etapas-solicitud .etapa-creada::before {
+    background: #315477;
+}
+
+.etapas-solicitud .etapa-aprobado::before {
+    background: #198754;
+}
+
+.etapas-solicitud .etapa-rechazado::before {
+    background: #c40046;
+}
+
+.etapas-solicitud .etapa-pendiente::before {
+    background: #d58a00;
+}
+
+.etapas-solicitud .etapa-anulado::before {
+    background: #b3bcc5;
+}
+
+.etapa-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.etapa-titulo {
+    font-size: 13.5px;
+    font-weight: bold;
+    color: #26384d;
+}
+
+.etapa-estado {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 11px;
+    border-radius: 30px;
+    white-space: nowrap;
+    background: #eef1f4;
+    color: #68717c;
+}
+
+.etapa-creada .etapa-estado {
+    background: #e8eef7;
+    color: #315477;
+}
+
+.etapa-aprobado .etapa-estado {
+    background: #eaf7ef;
+    color: #198754;
+}
+
+.etapa-rechazado .etapa-estado {
+    background: #fce8f0;
+    color: #c40046;
+}
+
+.etapa-pendiente .etapa-estado {
+    background: #fff7df;
+    color: #d58a00;
+}
+
+.etapa-fecha {
+    margin-top: 3px;
+    font-size: 12.5px;
+    color: #68717c;
+}
+
+.linea-tiempo-pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    padding-top: 13px;
+    border-top: 1px dashed #dfe4ea;
+}
+
+.resultado-final {
+    font-size: 13px;
+    color: #68717c;
+}
+
+.resultado-final strong {
+    color: #26384d;
+}
+
+.enlace-trazabilidad {
+    font-size: 12.5px;
+    font-weight: bold;
+    color: #c40046;
+    text-decoration: none;
+    padding: 7px 13px;
+    border: 1px solid #f1d4df;
+    border-radius: 8px;
+    background: #fde8ef;
+    transition: background 0.2s ease;
+}
+
+.enlace-trazabilidad:hover {
+    background: #f9d9e4;
+}
+

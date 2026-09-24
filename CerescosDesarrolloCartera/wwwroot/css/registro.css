@@ -1,0 +1,177 @@
+﻿* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f4f6f8, #ffffff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.contenedor {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+
+.titulo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.titulo h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.titulo p {
+    color: #777;
+    font-size: 14px;
+}
+
+.fila {
+    display: flex;
+    gap: 15px;
+}
+
+.campo {
+    margin-bottom: 18px;
+    flex: 1;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+.campo input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.campo input:focus {
+    border-color: #333;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.boton {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 8px;
+}
+
+.boton:hover {
+    background: #444;
+}
+
+.mensaje {
+    display: none;
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.mensaje.exito {
+    display: block;
+    background: #e8f7e8;
+    color: #267326;
+}
+
+.mensaje.error {
+    display: block;
+    background: #fdeaea;
+    color: #a12626;
+}
+
+.enlace {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 14px;
+    color: #666;
+}
+
+.enlace a {
+    color: #222;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.enlace a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 550px) {
+    .contenedor {
+        padding: 25px;
+    }
+
+    .fila {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+/* =========================================================
+   LOGO CORPORATIVO
+   =========================================================
+   Aqui el fondo ya es claro, asi que el logo va directo.
+   Al hacer clic vuelve a la pantalla inicial.
+========================================================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto 10px;
+    text-decoration: none;
+    transition: transform 0.25s ease;
+}
+
+.logo:hover {
+    transform: scale(1.03);
+}
+
+.logo img {
+    display: block;
+    height: 40px;
+    width: auto;
+}
+
+@media (max-width: 600px) {
+    .logo img {
+        height: 34px;
+    }
+}

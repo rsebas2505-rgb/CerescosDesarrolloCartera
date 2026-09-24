@@ -1,0 +1,872 @@
+﻿* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --rojo: #c40046;
+    --rojo-oscuro: #a9003c;
+    --rojo-claro: #fff3f7;
+    --azul: #26384d;
+    --gris: #6c8095;
+    --borde: #e1e7ec;
+    --fondo: #f4f6f8;
+}
+
+body {
+    background:
+        radial-gradient(circle at 8% 15%, rgba(196, 0, 70, 0.055), transparent 25%),
+        radial-gradient(circle at 92% 85%, rgba(38, 56, 77, 0.05), transparent 25%), var(--fondo);
+    color: var(--azul);
+    min-height: 100vh;
+}
+
+/* =========================================
+           ENCABEZADO
+        ========================================= */
+
+.encabezado {
+    min-height: 105px;
+    background: linear-gradient(110deg, #c40046 0%, #c9004b 55%, #ad003d 100%);
+    display: flex;
+    align-items: center;
+    padding: 0 7%;
+    box-shadow: 0 6px 25px rgba(73, 17, 40, 0.18);
+    position: relative;
+    z-index: 10;
+}
+
+.encabezado::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.055));
+    pointer-events: none;
+}
+
+/* =========================================
+           LOGO
+        ========================================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    margin-right: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+
+
+
+.separador {
+    width: 1px;
+    height: 42px;
+    background: rgba(255, 255, 255, 0.4);
+    margin-right: 28px;
+}
+
+.titulo-sistema {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+/* =========================================
+           CUENTA
+        ========================================= */
+
+.cuenta {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: white;
+    position: relative;
+    z-index: 2;
+}
+
+.datos-usuario {
+    text-align: right;
+    line-height: 1.25;
+}
+
+.usuario-nombre {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.usuario-rol {
+    font-size: 13px;
+    margin-top: 5px;
+    opacity: 0.88;
+}
+
+.avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: white;
+    color: var(--rojo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+}
+
+.btn-cerrar {
+    height: 44px;
+    padding: 0 19px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.btn-cerrar:hover {
+    background: white;
+    color: var(--rojo);
+    transform: translateY(-1px);
+}
+
+/* =========================================
+           CONTENIDO
+        ========================================= */
+
+.contenedor {
+    max-width: 1050px;
+    margin: auto;
+    padding: 55px 25px 75px;
+}
+
+/* =========================================
+           TITULO
+        ========================================= */
+
+.titulo {
+    text-align: center;
+    margin-bottom: 38px;
+}
+
+.etiqueta-superior {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    border: 1px solid rgba(196, 0, 70, 0.1);
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.etiqueta-superior::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--rojo);
+    box-shadow: 0 0 0 4px rgba(196, 0, 70, 0.1);
+}
+
+.titulo h1 {
+    font-size: 45px;
+    color: var(--azul);
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+.titulo h1 span {
+    color: var(--rojo);
+}
+
+.titulo p {
+    color: var(--gris);
+    font-size: 17px;
+}
+
+/* =========================================
+           INDICADOR DE PROCESO
+        ========================================= */
+
+.ruta-proceso {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.paso {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid var(--borde);
+    border-radius: 13px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.paso-numero {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.paso strong {
+    display: block;
+    font-size: 13px;
+    color: var(--azul);
+}
+
+.paso small {
+    display: block;
+    margin-top: 3px;
+    color: #8795a3;
+    font-size: 11px;
+}
+
+/* =========================================
+           TARJETA PRINCIPAL
+        ========================================= */
+
+.formulario-card {
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid var(--borde);
+    border-radius: 22px;
+    padding: 42px;
+    box-shadow:
+        0 18px 50px rgba(30, 50, 70, 0.08),
+        0 3px 10px rgba(30, 50, 70, 0.03);
+    position: relative;
+    overflow: hidden;
+}
+
+.formulario-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--rojo), #e63273, var(--rojo));
+}
+
+.encabezado-formulario {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 34px;
+}
+
+.icono-formulario {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    flex-shrink: 0;
+    border: 1px solid rgba(196, 0, 70, 0.08);
+}
+
+.formulario-card h2 {
+    font-size: 27px;
+    margin-bottom: 6px;
+    color: var(--azul);
+}
+
+.descripcion {
+    color: #718092;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* =========================================
+           SECCIONES
+        ========================================= */
+
+.seccion-formulario {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.seccion-formulario:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.campo {
+    margin-bottom: 25px;
+}
+
+.campo:last-child {
+    margin-bottom: 0;
+}
+
+.campo label {
+    display: block;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 9px;
+    color: var(--azul);
+}
+
+.obligatorio {
+    color: var(--rojo);
+}
+
+.ayuda-campo {
+    color: #8996a3;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+/* =========================================
+           INPUTS
+        ========================================= */
+
+.campo input[type="text"],
+.campo textarea {
+    width: 100%;
+    border: 1px solid #d3dbe3;
+    border-radius: 11px;
+    padding: 14px 15px;
+    font-size: 15px;
+    outline: none;
+    color: var(--azul);
+    background: white;
+    transition: 0.25s ease;
+}
+
+.campo input[type="text"] {
+    height: 53px;
+}
+
+/* =========================================
+   DOCUMENTO ADJUNTO
+   =========================================
+   Se le da al campo de archivo el mismo
+   aspecto que a los demas campos, y al boton
+   interno el estilo de la paleta.
+========================================= */
+
+.campo input[type="file"] {
+    width: 100%;
+    border: 1px dashed #d3dbe3;
+    border-radius: 11px;
+    padding: 14px 15px;
+    font-size: 14px;
+    outline: none;
+    color: var(--azul);
+    background: white;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.campo input[type="file"]:hover {
+    border-color: var(--rojo);
+    background: #fffafb;
+}
+
+.campo input[type="file"]:focus {
+    border-color: var(--rojo);
+    box-shadow: 0 0 0 4px rgba(196, 0, 70, 0.07);
+}
+
+.campo input[type="file"]::file-selector-button {
+    margin-right: 14px;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--rojo), #ad003d);
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.campo input[type="file"]::file-selector-button:hover {
+    background: linear-gradient(135deg, #ad003d, #960035);
+}
+
+.campo textarea {
+    min-height: 145px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+    color: #a6b0ba;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    border-color: var(--rojo);
+    box-shadow:
+        0 0 0 4px rgba(196, 0, 70, 0.07),
+        0 5px 15px rgba(30, 50, 70, 0.04);
+    transform: translateY(-1px);
+}
+
+/* =========================================
+           CANAL
+        ========================================= */
+
+.opciones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.opcion {
+    border: 1px solid #d3dbe3;
+    border-radius: 12px;
+    padding: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.25s ease;
+    background: #fff;
+}
+
+.opcion:hover {
+    border-color: rgba(196, 0, 70, 0.55);
+    background: #fff9fb;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(196, 0, 70, 0.07);
+}
+
+.opcion:has(input:checked) {
+    border-color: var(--rojo);
+    background: var(--rojo-claro);
+    box-shadow: 0 6px 18px rgba(196, 0, 70, 0.08);
+}
+
+.opcion input {
+    width: 19px;
+    height: 19px;
+    accent-color: var(--rojo);
+    cursor: pointer;
+}
+
+.opcion span {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* =========================================
+           TIPOS
+        ========================================= */
+
+.tipos {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.tipo {
+    border: 1px solid #d5dde4;
+    border-radius: 11px;
+    padding: 15px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    background: white;
+    transition: 0.22s ease;
+}
+
+.tipo:hover {
+    border-color: rgba(196, 0, 70, 0.5);
+    background: #fff9fb;
+    transform: translateX(2px);
+}
+
+.tipo:has(input:checked) {
+    border-color: var(--rojo);
+    background: var(--rojo-claro);
+}
+
+.tipo input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--rojo);
+    cursor: pointer;
+}
+
+.tipo span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #394b5d;
+}
+
+/* =========================================
+           FECHA
+        ========================================= */
+
+.fecha {
+    width: 100%;
+    height: 53px;
+    background: linear-gradient(90deg, #f6f8fa, #fafbfc);
+    border: 1px solid #d8dfe6;
+    border-radius: 11px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    color: #516579;
+    font-weight: 600;
+    position: relative;
+}
+
+.fecha::before {
+    content: "📅";
+    margin-right: 10px;
+    font-size: 17px;
+}
+
+/* =========================================
+           CONSEJO
+        ========================================= */
+
+.consejo {
+    margin-top: 4px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #f8fafb;
+    border: 1px solid #e7ecf0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.consejo-icono {
+    font-size: 19px;
+    line-height: 1;
+}
+
+.consejo-texto strong {
+    display: block;
+    color: var(--azul);
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.consejo-texto span {
+    color: #7b8997;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+/* =========================================
+           BOTONES
+        ========================================= */
+
+.acciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid #e8edf1;
+}
+
+.btn-volver {
+    height: 52px;
+    padding: 0 23px;
+    border-radius: 10px;
+    border: 1px solid #ccd5dd;
+    background: white;
+    color: var(--azul);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.25s ease;
+}
+
+.btn-volver:hover {
+    background: #f5f7f9;
+    border-color: #b9c4ce;
+    transform: translateY(-1px);
+}
+
+.btn-enviar {
+    height: 52px;
+    padding: 0 31px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #c40046, #a9003c);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 7px 18px rgba(196, 0, 70, 0.22);
+    transition: 0.25s ease;
+}
+
+.btn-enviar:hover {
+    background: linear-gradient(135deg, #d0004d, #a00039);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 23px rgba(196, 0, 70, 0.28);
+}
+
+.btn-enviar:active {
+    transform: translateY(0);
+}
+
+.btn-enviar:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* =========================================
+           MENSAJE
+        ========================================= */
+
+.mensaje {
+    display: none;
+    padding: 15px 18px;
+    border-radius: 11px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.mensaje.error {
+    display: block;
+    background: #fde8ec;
+    color: #a30038;
+    border: 1px solid #f4cbd5;
+}
+
+.mensaje.exito {
+    display: block;
+    background: #e8f7ed;
+    color: #19733c;
+    border: 1px solid #c8ead4;
+}
+
+/* =========================================
+           RESPONSIVE
+        ========================================= */
+
+@media (max-width: 850px) {
+    .encabezado {
+        padding: 18px 4%;
+    }
+
+    .titulo-sistema {
+        font-size: 17px;
+    }
+
+    .contenedor {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
+
+@media (max-width: 700px) {
+    .encabezado {
+        min-height: auto;
+        padding: 18px 20px;
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+
+
+
+    .separador {
+        height: 30px;
+        margin-right: 12px;
+    }
+
+    .titulo-sistema {
+        font-size: 16px;
+    }
+
+    .cuenta {
+        width: 100%;
+        margin-left: 0;
+        justify-content: flex-end;
+    }
+
+    .datos-usuario {
+        display: none;
+    }
+
+    .avatar {
+        width: 45px;
+        height: 45px;
+    }
+
+    .btn-cerrar {
+        height: 43px;
+        padding: 0 15px;
+    }
+
+    .contenedor {
+        padding: 40px 16px 55px;
+    }
+
+    .titulo {
+        margin-bottom: 28px;
+    }
+
+    .titulo h1 {
+        font-size: 36px;
+    }
+
+    .titulo p {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .ruta-proceso {
+        grid-template-columns: 1fr;
+        gap: 9px;
+        margin-bottom: 20px;
+    }
+
+    .paso {
+        padding: 12px 14px;
+    }
+
+    .formulario-card {
+        padding: 25px 20px;
+        border-radius: 17px;
+    }
+
+    .encabezado-formulario {
+        gap: 12px;
+        margin-bottom: 27px;
+    }
+
+    .icono-formulario {
+        width: 45px;
+        height: 45px;
+        font-size: 21px;
+    }
+
+    .formulario-card h2 {
+        font-size: 23px;
+    }
+
+    .descripcion {
+        font-size: 14px;
+    }
+
+    .opciones {
+        grid-template-columns: 1fr;
+    }
+
+    .acciones {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .btn-volver,
+    .btn-enviar {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 430px) {
+
+
+    .titulo-sistema {
+        font-size: 14px;
+    }
+
+    .btn-cerrar {
+        font-size: 12px;
+    }
+
+    .titulo h1 {
+        font-size: 32px;
+    }
+
+    .formulario-card {
+        padding: 22px 16px;
+    }
+}
+
+/* =========================================================
+   LOGO CORPORATIVO
+   =========================================================
+   Imagen oficial sobre base blanca, porque el logo es rojo
+   con fondo transparente y el encabezado tambien es rojo.
+   Al hacer clic vuelve al menu inicial.
+========================================================= */
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 9px 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.13);
+    transition: transform 0.25s ease;
+    margin-right: 30px;
+}
+
+.logo:hover {
+    transform: scale(1.03);
+}
+
+.logo img {
+    display: block;
+    height: 34px;
+    width: auto;
+}
+
+@media (max-width: 600px) {
+    .logo {
+        padding: 7px 11px;
+        margin-right: 10px;
+    }
+
+    .logo img {
+        height: 26px;
+    }
+}

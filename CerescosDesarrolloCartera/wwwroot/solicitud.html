@@ -1,0 +1,574 @@
+﻿<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Cerescos | Nueva solicitud</title>
+
+        <link rel="stylesheet" href="css/solicitud.css" />
+    </head>
+
+    <body>
+        <!-- =========================================
+         ENCABEZADO
+    ========================================= -->
+
+        <header class="encabezado">
+            <a href="index.html" class="logo" title="Volver al menú inicial">
+                <img src="img/logo-cerescos.png" alt="Cerescos" />
+            </a>
+
+            <div class="separador"></div>
+
+            <div class="titulo-sistema"> Solicitud de cartera </div>
+
+            <div class="cuenta">
+                <div class="datos-usuario">
+                    <div class="usuario-nombre" id="usuarioNombre"> Usuario </div>
+
+                    <div class="usuario-rol" id="usuarioRol"> Creador </div>
+                </div>
+
+                <div class="avatar" id="avatar"> U </div>
+
+                <button class="btn-cerrar" id="btnCerrar"> Cerrar sesión </button>
+            </div>
+        </header>
+
+        <!-- =========================================
+         CONTENIDO
+    ========================================= -->
+
+        <main class="contenedor">
+            <section class="titulo">
+                <div class="etiqueta-superior"> Gestión de cartera </div>
+
+                <h1> Nueva <span>solicitud</span> </h1>
+
+                <p> Completa la información para iniciar el proceso de atención. </p>
+            </section>
+
+            <!-- =========================================
+             RUTA DEL PROCESO
+        ========================================= -->
+
+            <section class="ruta-proceso">
+                <div class="paso">
+                    <div class="paso-numero"> 1 </div>
+
+                    <div>
+                        <strong> Crear solicitud </strong>
+
+                        <small> Ingresa la información </small>
+                    </div>
+                </div>
+
+                <div class="paso">
+                    <div class="paso-numero"> 2 </div>
+
+                    <div>
+                        <strong> Revisión del jefe </strong>
+
+                        <small> Validación según el canal </small>
+                    </div>
+                </div>
+
+                <div class="paso">
+                    <div class="paso-numero"> 3 </div>
+
+                    <div>
+                        <strong> Revisión de Cartera </strong>
+
+                        <small> Evaluación y resultado final </small>
+                    </div>
+                </div>
+            </section>
+
+            <section class="formulario-card">
+                <div class="encabezado-formulario">
+                    <div class="icono-formulario"> 📋 </div>
+
+                    <div>
+                        <h2> Datos de la solicitud </h2>
+
+                        <p class="descripcion">
+                            Diligencia todos los campos requeridos para enviar la solicitud.
+                        </p>
+                    </div>
+                </div>
+
+                <form id="solicitudForm">
+                    <!-- =================================
+                     CANAL
+                ================================== -->
+
+                    <div class="seccion-formulario">
+                        <div class="campo">
+                            <label>
+                                Canal
+                                <span class="obligatorio">*</span>
+                            </label>
+
+                            <div class="opciones">
+                                <label class="opcion">
+                                    <input type="radio" name="canal" value="Depositos" required />
+
+                                    <span> Depósitos </span>
+                                </label>
+
+                                <label class="opcion">
+                                    <input type="radio" name="canal" value="Cadenas" />
+
+                                    <span> Cadenas </span>
+                                </label>
+                            </div>
+
+                            <div class="ayuda-campo">
+                                Selecciona el canal correspondiente a la solicitud.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- =================================
+                     CLIENTE + FECHA
+                ================================== -->
+
+                    <div class="seccion-formulario">
+                        <div class="campo">
+                            <label for="cliente">
+                                Nombre del cliente
+                                <span class="obligatorio">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cliente"
+                                name="cliente"
+                                placeholder="Ej. Cliente ABC"
+                                required
+                            />
+
+                            <div class="ayuda-campo">
+                                Ingresa el nombre con el que se identifica el cliente.
+                            </div>
+                        </div>
+
+                        <div class="campo">
+                            <label> Fecha de solicitud </label>
+
+                            <div class="fecha" id="fechaSolicitud"> </div>
+                        </div>
+                    </div>
+
+                    <!-- =================================
+                     TIPO DE SOLICITUD
+                ================================== -->
+
+                    <div class="seccion-formulario">
+                        <div class="campo">
+                            <label>
+                                Tipo de solicitud
+                                <span class="obligatorio">*</span>
+                            </label>
+
+                            <div class="tipos">
+                                <label class="tipo">
+                                    <input
+                                        type="checkbox"
+                                        name="tipoSolicitud"
+                                        value="Aplicación de pagos"
+                                    />
+
+                                    <span> Aplicación de pagos </span>
+                                </label>
+
+                                <label class="tipo">
+                                    <input
+                                        type="checkbox"
+                                        name="tipoSolicitud"
+                                        value="Generación de NC negociaciones"
+                                    />
+
+                                    <span> Generación de NC negociaciones </span>
+                                </label>
+
+                                <label class="tipo">
+                                    <input
+                                        type="checkbox"
+                                        name="tipoSolicitud"
+                                        value="Solicitud reporte de cartera"
+                                    />
+
+                                    <span> Solicitud reporte de cartera </span>
+                                </label>
+                            </div>
+
+                            <div class="ayuda-campo">
+                                Puedes seleccionar uno o varios tipos de solicitud.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- =================================
+                     DETALLE
+                ================================== -->
+
+                    <div class="seccion-formulario">
+                        <div class="campo">
+                            <label for="detalle">
+                                Detalle de la solicitud
+                                <span class="obligatorio">*</span>
+                            </label>
+
+                            <textarea
+                                id="detalle"
+                                name="detalle"
+                                placeholder="Especifica detalladamente la solicitud..."
+                                required
+                            ></textarea>
+
+                            <div class="ayuda-campo">
+                                Describe la situación, requerimiento o información que debe ser
+                                revisada.
+                            </div>
+                        </div>
+
+                        <div class="consejo">
+                            <div class="consejo-icono"> 💡 </div>
+
+                            <div class="consejo-texto">
+                                <strong> Una buena descripción facilita la atención </strong>
+
+                                <span>
+                                    Incluye la información necesaria para que el responsable pueda
+                                    comprender y gestionar la solicitud correctamente.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- =================================
+                     DOCUMENTO ADJUNTO
+                ================================== -->
+
+                    <div class="seccion-formulario">
+                        <div class="campo">
+                            <label for="documento"> Documento adjunto </label>
+
+                            <input type="file" id="documento" name="documento" />
+
+                            <div class="ayuda-campo" id="ayudaDocumento">
+                                Opcional. Puedes adjuntar cualquier tipo de archivo (máximo 20 MB).
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- =================================
+                     BOTONES
+                ================================== -->
+
+                    <div class="acciones">
+                        <a href="index.html" class="btn-volver"> ← Volver al inicio </a>
+
+                        <button type="submit" class="btn-enviar"> Enviar solicitud </button>
+                    </div>
+
+                    <div id="mensaje" class="mensaje"> </div>
+                </form>
+            </section>
+        </main>
+
+        <!-- =========================================
+         JAVASCRIPT
+         NO SE MODIFICA LA FUNCIONALIDAD
+    ========================================= -->
+
+        <script src="js/comun.js"></script>
+
+        <script>
+            /* =========================================
+           USUARIO
+        ========================================= */
+
+            let usuario = null;
+
+            /* =========================================
+           MOSTRAR USUARIO
+        ========================================= */
+
+            (async function () {
+                usuario = await obtenerUsuarioSesion();
+
+                if (!usuario) {
+                    return;
+                }
+
+                const nombreUsuario = usuario.usuarioNombre || usuario.UsuarioNombre || "Usuario";
+
+                const rolUsuario = usuario.rol || usuario.Rol || "Creador";
+
+                document.getElementById("usuarioNombre").textContent = nombreUsuario;
+
+                document.getElementById("usuarioRol").textContent = rolUsuario;
+
+                document.getElementById("avatar").textContent = nombreUsuario
+                    .charAt(0)
+                    .toUpperCase();
+            })();
+
+            /* =========================================
+           FECHA ACTUAL
+        ========================================= */
+
+            const hoy = new Date();
+
+            const dia = String(hoy.getDate()).padStart(2, "0");
+
+            const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+
+            const año = hoy.getFullYear();
+
+            document.getElementById("fechaSolicitud").textContent = `${dia}/${mes}/${año}`;
+
+            /* =========================================
+           FORMULARIO
+        ========================================= */
+
+            document
+                .getElementById("solicitudForm")
+                .addEventListener("submit", async function (event) {
+                    event.preventDefault();
+
+                    const canal = document.querySelector('input[name="canal"]:checked');
+
+                    const tipos = document.querySelectorAll('input[name="tipoSolicitud"]:checked');
+
+                    const cliente = document.getElementById("cliente").value.trim();
+
+                    const detalle = document.getElementById("detalle").value.trim();
+
+                    const mensaje = document.getElementById("mensaje");
+
+                    /* =============================
+                       VALIDACIONES
+                    ============================= */
+
+                    if (!canal) {
+                        mostrarMensaje("Selecciona un canal.", "error");
+
+                        return;
+                    }
+
+                    if (!cliente) {
+                        mostrarMensaje("Ingresa el nombre del cliente.", "error");
+
+                        return;
+                    }
+
+                    if (tipos.length === 0) {
+                        mostrarMensaje("Selecciona al menos un tipo de solicitud.", "error");
+
+                        return;
+                    }
+
+                    if (!detalle) {
+                        mostrarMensaje("Ingresa el detalle de la solicitud.", "error");
+
+                        return;
+                    }
+
+                    /* =============================
+                       OBTENER ID DEL USUARIO
+                    ============================= */
+
+                    const usuarioCreadorId = usuario.id || usuario.Id;
+
+                    if (!usuarioCreadorId) {
+                        mostrarMensaje(
+                            "No se pudo identificar el usuario creador. Cierra sesión e inicia sesión nuevamente.",
+                            "error",
+                        );
+
+                        console.error("Usuario almacenado:", usuario);
+
+                        return;
+                    }
+
+                    /* =============================
+                       TIPOS COMO TEXTO
+                    ============================= */
+
+                    const tipoSolicitud = Array.from(tipos)
+                        .map((tipo) => tipo.value)
+                        .join(", ");
+
+                    /* =============================
+                       FECHA PARA SQL
+                    ============================= */
+
+                    const fechaSolicitud = `${año}-${mes}-${dia}`;
+
+                    /* =============================
+                       OBJETO FINAL
+                    ============================= */
+
+                    /* =============================
+                       DOCUMENTO ADJUNTO (OPCIONAL)
+                    ============================= */
+
+                    const campoDocumento = document.getElementById("documento");
+
+                    const archivo =
+                        campoDocumento && campoDocumento.files.length > 0
+                            ? campoDocumento.files[0]
+                            : null;
+
+                    const TAMANO_MAXIMO = 20 * 1024 * 1024;
+
+                    if (archivo && archivo.size > TAMANO_MAXIMO) {
+                        mostrarMensaje(
+                            "El documento supera el tamaño máximo permitido (20 MB).",
+                            "error",
+                        );
+
+                        return;
+                    }
+
+                    /* =============================
+                       DATOS DEL FORMULARIO
+                    ============================= */
+                    /*
+                       Se envía como FormData (no como JSON) porque
+                       la solicitud puede llevar un archivo adjunto.
+                    */
+
+                    const solicitud = new FormData();
+
+                    solicitud.append("Canal", canal.value);
+
+                    solicitud.append("NombreCliente", cliente);
+
+                    solicitud.append("FechaSolicitud", fechaSolicitud);
+
+                    solicitud.append("TipoSolicitud", tipoSolicitud);
+
+                    solicitud.append("DetalleSolicitud", detalle);
+
+                    if (archivo) {
+                        solicitud.append("documento", archivo);
+                    }
+
+                    /* =============================
+                       DESHABILITAR BOTÓN
+                    ============================= */
+
+                    const botonEnviar = document.querySelector(".btn-enviar");
+
+                    botonEnviar.disabled = true;
+
+                    botonEnviar.textContent = "Enviando...";
+
+                    /* =============================
+                       ENVIAR A LA API
+                    ============================= */
+
+                    try {
+                        /*
+                           No se define Content-Type a propósito:
+                           el navegador lo arma solo, con el
+                           separador que necesita el archivo.
+                        */
+
+                        const response = await fetch("/api/Solicitudes", {
+                            method: "POST",
+
+                            credentials: "same-origin",
+
+                            body: solicitud,
+                        });
+
+                        /* =========================
+                           LEER RESPUESTA
+                        ========================= */
+
+                        let resultado = {};
+
+                        try {
+                            resultado = await response.json();
+                        } catch (error) {
+                            resultado = {};
+                        }
+
+                        console.log("Respuesta del servidor:", resultado);
+
+                        /* =========================
+                           ERROR
+                        ========================= */
+
+                        if (!response.ok) {
+                            mostrarMensaje(
+                                resultado.mensaje || "No fue posible crear la solicitud.",
+                                "error",
+                            );
+
+                            console.error("Error de API:", resultado);
+
+                            return;
+                        }
+
+                        /* =========================
+                           ÉXITO
+                        ========================= */
+
+                        mostrarMensaje(
+                            "Solicitud creada correctamente. Número de solicitud: " +
+                                resultado.solicitudId,
+                            "exito",
+                        );
+
+                        /* =========================
+                           LIMPIAR FORMULARIO
+                        ========================= */
+
+                        document.getElementById("solicitudForm").reset();
+
+                        /* =========================
+                           RESTAURAR FECHA
+                        ========================= */
+
+                        document.getElementById("fechaSolicitud").textContent =
+                            `${dia}/${mes}/${año}`;
+                    } catch (error) {
+                        console.error("Error al conectar con la API:", error);
+
+                        mostrarMensaje("No fue posible conectar con el servidor.", "error");
+                    } finally {
+                        botonEnviar.disabled = false;
+
+                        botonEnviar.textContent = "Enviar solicitud";
+                    }
+                });
+
+            /* =========================================
+           MOSTRAR MENSAJE
+        ========================================= */
+
+            function mostrarMensaje(texto, tipo) {
+                const mensaje = document.getElementById("mensaje");
+
+                mensaje.textContent = texto;
+
+                mensaje.className = "mensaje " + tipo;
+
+                mensaje.style.display = "block";
+
+                mensaje.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                });
+            }
+        </script>
+    </body>
+</html>

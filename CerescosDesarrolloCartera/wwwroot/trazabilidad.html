@@ -1,0 +1,698 @@
+﻿<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Cerescos | Trazabilidad</title>
+
+        <link rel="stylesheet" href="css/trazabilidad.css" />
+    </head>
+
+    <body>
+        <!-- =========================================================
+         ENCABEZADO
+    ========================================================= -->
+
+        <header class="encabezado">
+            <div class="logo-sistema">
+                <a href="index.html" class="logo" title="Volver al menú inicial">
+                    <img src="img/logo-cerescos.png" alt="Cerescos" />
+                </a>
+
+                <div class="titulo-sistema"> Solicitud de cartera </div>
+            </div>
+
+            <div class="usuario">
+                <div class="usuario-info">
+                    <div class="usuario-nombre" id="usuarioNombre"> Usuario </div>
+
+                    <div class="usuario-rol" id="usuarioRol"> Rol </div>
+                </div>
+
+                <div class="avatar" id="avatar"> U </div>
+            </div>
+        </header>
+
+        <!-- =========================================================
+         CONTENIDO
+    ========================================================= -->
+
+        <main>
+            <h1 class="titulo-principal">
+                <span>Trazabilidad</span>
+                de solicitudes
+            </h1>
+
+            <p class="subtitulo">
+                Consulta el recorrido completo de una solicitud de cartera y conoce el estado de
+                cada etapa de aprobación.
+            </p>
+
+            <!-- =====================================================
+             BUSCADOR
+        ===================================================== -->
+
+            <div class="buscador">
+                <div class="campo">
+                    <label for="numeroSolicitud"> Número de solicitud </label>
+
+                    <input type="number" id="numeroSolicitud" min="1" placeholder="Ejemplo: 1054" />
+                </div>
+
+                <button type="button" class="btn-consultar" onclick="consultarTrazabilidad()">
+                    Consultar
+                </button>
+            </div>
+
+            <!-- =====================================================
+             MENSAJE
+        ===================================================== -->
+
+            <div id="mensaje" class="mensaje"> </div>
+
+            <!-- =====================================================
+             RESULTADO
+        ===================================================== -->
+
+            <section id="resultado">
+                <!-- =================================================
+                 CABECERA
+            ================================================= -->
+
+                <div class="cabecera-solicitud">
+                    <div>
+                        <div class="numero">
+                            Solicitud
+
+                            <strong id="solicitudId"> #0 </strong>
+                        </div>
+
+                        <h2 class="cliente" id="nombreCliente"> - </h2>
+
+                        <span class="canal" id="canal"> - </span>
+                    </div>
+
+                    <div class="estado-general">
+                        <div class="estado-general-titulo"> Estado general </div>
+
+                        <span id="estadoGeneral" class="estado estado-pendiente"> - </span>
+                    </div>
+                </div>
+
+                <!-- =================================================
+                 INFORMACIÓN
+            ================================================= -->
+
+                <div class="grid">
+                    <!-- =============================================
+                     INFORMACIÓN SOLICITUD
+                ============================================== -->
+
+                    <div class="tarjeta">
+                        <h2> Información de la solicitud </h2>
+
+                        <div class="dato">
+                            <span class="dato-label"> Fecha de solicitud </span>
+
+                            <span class="dato-valor" id="fechaSolicitud"> - </span>
+                        </div>
+
+                        <div class="dato">
+                            <span class="dato-label"> Tipo de solicitud </span>
+
+                            <span class="dato-valor" id="tipoSolicitud"> - </span>
+                        </div>
+
+                        <div class="dato">
+                            <span class="dato-label"> Detalle </span>
+
+                            <div class="dato-valor detalle" id="detalleSolicitud"> - </div>
+                        </div>
+
+                        <div class="dato">
+                            <span class="dato-label"> Fecha de creación </span>
+
+                            <span class="dato-valor" id="fechaCreacion"> - </span>
+                        </div>
+
+                        <div class="dato">
+                            <span class="dato-label"> Documento adjunto </span>
+
+                            <span class="dato-valor" id="documentoAdjunto"> - </span>
+                        </div>
+                    </div>
+
+                    <!-- =============================================
+                     CREADOR
+                ============================================== -->
+
+                    <div class="tarjeta">
+                        <h2> Usuario creador </h2>
+
+                        <div class="dato">
+                            <span class="dato-label"> Nombre </span>
+
+                            <span class="dato-valor" id="creadorNombre"> - </span>
+                        </div>
+
+                        <div class="dato">
+                            <span class="dato-label"> Usuario </span>
+
+                            <span class="dato-valor" id="creadorUsuario"> - </span>
+                        </div>
+
+                        <div class="dato">
+                            <span class="dato-label"> Correo </span>
+
+                            <span class="dato-valor" id="creadorCorreo"> - </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- =================================================
+                 RECORRIDO
+            ================================================= -->
+
+                <div class="etapas">
+                    <h2> Recorrido de aprobación </h2>
+
+                    <div class="linea-tiempo">
+                        <!-- =========================================
+                         JEFE
+                    ========================================== -->
+
+                        <div class="etapa" id="etapaJefe">
+                            <div class="punto"></div>
+
+                            <div class="etapa-titulo">
+                                <h3> Aprobación del jefe </h3>
+
+                                <span id="estadoJefe" class="estado estado-pendiente">
+                                    Pendiente
+                                </span>
+                            </div>
+
+                            <div class="etapa-persona" id="jefePersona">
+                                Responsable pendiente
+                            </div>
+
+                            <div class="etapa-fecha" id="jefeFecha"> Sin fecha de respuesta </div>
+
+                            <div class="observacion" id="jefeObservacion">
+                                <span class="sin-observacion"> Sin observación registrada. </span>
+                            </div>
+                        </div>
+
+                        <!-- =========================================
+                         CARTERA
+                    ========================================== -->
+
+                        <div class="etapa" id="etapaCartera">
+                            <div class="punto"></div>
+
+                            <div class="etapa-titulo">
+                                <h3> Aprobación de Cartera </h3>
+
+                                <span id="estadoCartera" class="estado estado-pendiente">
+                                    Pendiente
+                                </span>
+                            </div>
+
+                            <div class="etapa-persona" id="carteraPersona">
+                                Aún no ha respondido Cartera
+                            </div>
+
+                            <div class="etapa-fecha" id="carteraFecha">
+                                Sin fecha de respuesta
+                            </div>
+
+                            <div class="observacion" id="carteraObservacion">
+                                <span class="sin-observacion"> Sin observación registrada. </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="index.html" class="volver"> ← Volver al inicio </a>
+            </section>
+        </main>
+
+        <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+        <footer> Cerescos © 2026 · Sistema de Solicitudes de Cartera </footer>
+
+        <script src="js/comun.js"></script>
+
+        <script>
+            /* =========================================================
+           USUARIO ACTUAL
+        ========================================================= */
+
+            let usuario = null;
+
+            /* =========================================================
+           VALIDAR SESIÓN
+        ========================================================= */
+
+            (async function () {
+                usuario = await obtenerUsuarioSesion();
+
+                if (!usuario) {
+                    return;
+                }
+
+                const nombre = usuario.nombre || usuario.Nombre || "Usuario";
+
+                const apellido = usuario.apellido || usuario.Apellido || "";
+
+                const rol = usuario.rol || usuario.Rol || "Sin rol";
+
+                const nombreCompleto = `${nombre} ${apellido}`.trim();
+
+                document.getElementById("usuarioNombre").textContent = nombreCompleto;
+
+                document.getElementById("usuarioRol").textContent = rol;
+
+                document.getElementById("avatar").textContent = obtenerIniciales(nombreCompleto);
+            })();
+
+            /* =========================================================
+           INICIALES
+        ========================================================= */
+
+            function obtenerIniciales(nombre) {
+                if (!nombre) {
+                    return "U";
+                }
+
+                const partes = nombre.trim().split(/\s+/);
+
+                if (partes.length === 1) {
+                    return partes[0].substring(0, 2).toUpperCase();
+                }
+
+                return (partes[0][0] + partes[1][0]).toUpperCase();
+            }
+
+            /* =========================================================
+           CONSULTAR
+        ========================================================= */
+
+            async function consultarTrazabilidad() {
+                const input = document.getElementById("numeroSolicitud");
+
+                const id = parseInt(input.value, 10);
+
+                ocultarMensaje();
+
+                document.getElementById("resultado").style.display = "none";
+
+                if (!id || id <= 0) {
+                    mostrarMensaje("Ingrese un número de solicitud válido.", "error");
+
+                    input.focus();
+
+                    return;
+                }
+
+                try {
+                    const respuesta = await fetch(
+                        `/api/Solicitudes/trazabilidad/${id}?usuarioId=${usuario.id}`,
+                    );
+
+                    /* =============================================
+                   NO AUTORIZADO
+                ============================================== */
+
+                    if (respuesta.status === 401) {
+                        mostrarMensaje(
+                            "Tu usuario no está autorizado o se encuentra inactivo.",
+                            "error",
+                        );
+
+                        return;
+                    }
+
+                    /* =============================================
+                   SIN PERMISOS
+                ============================================== */
+
+                    if (respuesta.status === 403) {
+                        mostrarMensaje(
+                            "No tienes permisos para consultar esta solicitud.",
+                            "error",
+                        );
+
+                        return;
+                    }
+
+                    /* =============================================
+                   NO EXISTE
+                ============================================== */
+
+                    if (respuesta.status === 404) {
+                        mostrarMensaje("La solicitud número " + id + " no existe.", "error");
+
+                        return;
+                    }
+
+                    /* =============================================
+                   OTRO ERROR
+                ============================================== */
+
+                    if (!respuesta.ok) {
+                        let mensaje = "No fue posible consultar la trazabilidad.";
+
+                        try {
+                            const error = await respuesta.json();
+
+                            if (error.mensaje) {
+                                mensaje = error.mensaje;
+                            }
+                        } catch {
+                            // Se mantiene mensaje general.
+                        }
+
+                        mostrarMensaje(mensaje, "error");
+
+                        return;
+                    }
+
+                    /* =============================================
+                   RESPUESTA CORRECTA
+                ============================================== */
+
+                    const datos = await respuesta.json();
+
+                    mostrarTrazabilidad(datos);
+                } catch (error) {
+                    console.error("Error consultando trazabilidad:", error);
+
+                    mostrarMensaje("No se pudo conectar con el servidor.", "error");
+                }
+            }
+
+            /* =========================================================
+           MOSTRAR INFORMACIÓN
+        ========================================================= */
+
+            function mostrarTrazabilidad(datos) {
+                const solicitud = datos.solicitud || {};
+
+                const creador = datos.creador || {};
+
+                const jefe = datos.jefe || {};
+
+                const aprobacionJefe = datos.aprobacionJefe || {};
+
+                const cartera = datos.cartera || {};
+
+                const aprobacionCartera = datos.aprobacionCartera || {};
+
+                /* =============================================
+               SOLICITUD
+            ============================================== */
+
+                document.getElementById("solicitudId").textContent = "#" + (solicitud.id || "-");
+
+                document.getElementById("nombreCliente").textContent =
+                    solicitud.nombreCliente || "-";
+
+                document.getElementById("canal").textContent = solicitud.canal || "-";
+
+                document.getElementById("fechaSolicitud").textContent = formatearSoloFecha(
+                    solicitud.fechaSolicitud,
+                    "-",
+                );
+
+                document.getElementById("tipoSolicitud").textContent =
+                    solicitud.tipoSolicitud || "-";
+
+                document.getElementById("detalleSolicitud").textContent =
+                    solicitud.detalleSolicitud || "-";
+
+                document.getElementById("fechaCreacion").textContent = formatearFecha(
+                    solicitud.fechaCreacion,
+                );
+
+                /* =============================================
+                   DOCUMENTO ADJUNTO
+                ============================================= */
+
+                const documento = datos.documento || {};
+
+                const celdaDocumento = document.getElementById("documentoAdjunto");
+
+                if (documento.existe) {
+                    celdaDocumento.innerHTML = `
+                        ${enlaceAdjunto(solicitud.id, { archivoNombre: documento.nombre }, "")}
+                        <br />
+                        <small>Cargado el ${escapeHtml(formatearFecha(documento.fecha))}</small>
+                    `;
+                } else {
+                    celdaDocumento.textContent = "Sin documento adjunto";
+                }
+
+                /* =============================================
+               CREADOR
+            ============================================== */
+
+                document.getElementById("creadorNombre").textContent = creador.nombre || "-";
+
+                document.getElementById("creadorUsuario").textContent = creador.usuario || "-";
+
+                document.getElementById("creadorCorreo").textContent = creador.correo || "-";
+
+                /* =============================================
+               ESTADO GENERAL
+            ============================================== */
+
+                establecerEstado(
+                    document.getElementById("estadoGeneral"),
+                    solicitud.estadoGeneral || datos.estadoGeneral || "Pendiente",
+                );
+
+                /* =============================================
+               JEFE
+            ============================================== */
+
+                establecerEstado(
+                    document.getElementById("estadoJefe"),
+                    aprobacionJefe.estado || "Pendiente",
+                );
+
+                document.getElementById("jefePersona").textContent = obtenerPersona(jefe);
+
+                document.getElementById("jefeFecha").textContent = aprobacionJefe.fecha
+                    ? "Respuesta: " + formatearFecha(aprobacionJefe.fecha)
+                    : "Sin fecha de respuesta";
+
+                mostrarObservacion("jefeObservacion", aprobacionJefe.observacion);
+
+                establecerClaseEtapa("etapaJefe", aprobacionJefe.estado);
+
+                /* =============================================
+               CARTERA
+            ============================================== */
+
+                establecerEstado(
+                    document.getElementById("estadoCartera"),
+                    aprobacionCartera.estado || "Pendiente",
+                );
+
+                document.getElementById("carteraPersona").textContent = cartera.id
+                    ? obtenerPersona(cartera)
+                    : "Aún no ha respondido Cartera";
+
+                document.getElementById("carteraFecha").textContent = aprobacionCartera.fecha
+                    ? "Respuesta: " + formatearFecha(aprobacionCartera.fecha)
+                    : "Sin fecha de respuesta";
+
+                mostrarObservacion("carteraObservacion", aprobacionCartera.observacion);
+
+                establecerClaseEtapa("etapaCartera", aprobacionCartera.estado);
+
+                /* =============================================
+               MOSTRAR
+            ============================================== */
+
+                document.getElementById("resultado").style.display = "block";
+
+                mostrarMensaje("Trazabilidad consultada correctamente.", "exito");
+            }
+
+            /* =========================================================
+           OBTENER PERSONA
+        ========================================================= */
+
+            function obtenerPersona(persona) {
+                if (!persona) {
+                    return "Sin responsable";
+                }
+
+                const nombre = persona.nombre || "";
+
+                const usuario = persona.usuario || "";
+
+                const correo = persona.correo || "";
+
+                if (nombre && usuario) {
+                    return nombre + " · " + usuario;
+                }
+
+                if (nombre) {
+                    return nombre;
+                }
+
+                if (usuario) {
+                    return usuario;
+                }
+
+                if (correo) {
+                    return correo;
+                }
+
+                return "Sin responsable";
+            }
+
+            /* =========================================================
+           ESTADO
+        ========================================================= */
+
+            function establecerEstado(elemento, estado) {
+                if (!elemento) {
+                    return;
+                }
+
+                const valor = String(estado || "Pendiente").trim();
+
+                elemento.textContent = valor;
+
+                elemento.classList.remove(
+                    "estado-aprobado",
+                    "estado-rechazado",
+                    "estado-pendiente",
+                    "estado-revision",
+                );
+
+                const normalizado = valor.toLowerCase();
+
+                if (normalizado.includes("aprobado")) {
+                    elemento.classList.add("estado-aprobado");
+                } else if (normalizado.includes("rechazado")) {
+                    elemento.classList.add("estado-rechazado");
+                } else if (normalizado.includes("revisión") || normalizado.includes("revision")) {
+                    elemento.classList.add("estado-revision");
+                } else {
+                    elemento.classList.add("estado-pendiente");
+                }
+            }
+
+            /* =========================================================
+           CLASE ETAPA
+        ========================================================= */
+
+            function establecerClaseEtapa(id, estado) {
+                const elemento = document.getElementById(id);
+
+                if (!elemento) {
+                    return;
+                }
+
+                elemento.classList.remove("aprobado", "rechazado", "pendiente");
+
+                const normalizado = String(estado || "Pendiente").toLowerCase();
+
+                if (normalizado.includes("aprobado")) {
+                    elemento.classList.add("aprobado");
+                } else if (normalizado.includes("rechazado")) {
+                    elemento.classList.add("rechazado");
+                } else {
+                    elemento.classList.add("pendiente");
+                }
+            }
+
+            /* =========================================================
+           OBSERVACIÓN
+        ========================================================= */
+
+            function mostrarObservacion(id, observacion) {
+                const elemento = document.getElementById(id);
+
+                if (!elemento) {
+                    return;
+                }
+
+                if (observacion && String(observacion).trim()) {
+                    elemento.textContent = observacion;
+                } else {
+                    elemento.innerHTML =
+                        '<span class="sin-observacion">' +
+                        "Sin observación registrada." +
+                        "</span>";
+                }
+            }
+
+            /* =========================================================
+           FECHA
+        ========================================================= */
+
+            function formatearFecha(fecha) {
+                if (!fecha) {
+                    return "-";
+                }
+
+                const fechaObj = new Date(fecha);
+
+                if (isNaN(fechaObj.getTime())) {
+                    return String(fecha);
+                }
+
+                return fechaObj.toLocaleString("es-CO", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                });
+            }
+
+            /* =========================================================
+           MENSAJE
+        ========================================================= */
+
+            function mostrarMensaje(texto, tipo) {
+                const elemento = document.getElementById("mensaje");
+
+                elemento.textContent = texto;
+
+                elemento.className = "mensaje " + (tipo === "error" ? "error" : "exito");
+
+                elemento.style.display = "block";
+            }
+
+            function ocultarMensaje() {
+                const elemento = document.getElementById("mensaje");
+
+                elemento.style.display = "none";
+
+                elemento.textContent = "";
+            }
+
+            /* =========================================================
+           ENTER
+        ========================================================= */
+
+            document
+                .getElementById("numeroSolicitud")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        consultarTrazabilidad();
+                    }
+                });
+        </script>
+    </body>
+</html>

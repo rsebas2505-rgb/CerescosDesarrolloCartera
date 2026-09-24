@@ -1,0 +1,6 @@
+@CerescosDesarrolloCartera_HostAddress = http://localhost:5068
+
+GET {{CerescosDesarrolloCartera_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

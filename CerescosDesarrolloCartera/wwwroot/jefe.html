@@ -1,0 +1,1103 @@
+﻿<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Cerescos | Aprobaciones</title>
+
+        <link rel="stylesheet" href="css/jefe.css" />
+    </head>
+
+    <body>
+        <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+        <header>
+            <div class="logo-container">
+                <a href="index.html" class="logo" title="Volver al menú inicial">
+                    <img src="img/logo-cerescos.png" alt="Cerescos" />
+                </a>
+
+                <div class="titulo-header"> Solicitud de cartera </div>
+            </div>
+
+            <div class="usuario-header">
+                <div class="datos-usuario">
+                    <div class="nombre-usuario" id="nombreUsuario"> Usuario </div>
+
+                    <div class="rol-usuario" id="rolUsuario"> Rol </div>
+                </div>
+
+                <div class="avatar" id="avatarUsuario"> U </div>
+
+                <button class="btn-salir" onclick="cerrarSesion()"> Cerrar sesión </button>
+            </div>
+        </header>
+
+        <!-- =====================================================
+         CONTENIDO
+    ===================================================== -->
+
+        <main>
+            <div class="encabezado-pagina">
+                <div>
+                    <div class="etiqueta"> Centro de aprobaciones </div>
+
+                    <h1 class="titulo-principal"> Gestión de <span>aprobaciones</span> </h1>
+
+                    <p class="subtitulo">
+                        Consulta las solicitudes pendientes de aprobación y revisa el historial de
+                        decisiones tomadas.
+                    </p>
+                </div>
+
+                <div class="indicador-aprobaciones">
+                    <span class="indicador-punto"></span>
+
+                    Solicitudes pendientes de revisión
+                </div>
+            </div>
+
+            <!-- =================================================
+             INFORMACION DEL JEFE
+        ================================================= -->
+
+            <div class="info-jefe">
+                <h3 id="tituloResponsable"> Solicitudes asignadas </h3>
+
+                <p id="descripcionResponsable"> Cargando información... </p>
+            </div>
+
+            <!-- =================================================
+             FILTROS
+        ================================================= -->
+
+            <div class="filtros-solicitudes">
+                <div class="filtros-titulo">
+                    <div class="filtros-titulo-icono"> ☷ </div>
+
+                    Filtrar solicitudes
+                </div>
+
+                <div class="botones-filtro">
+                    <button
+                        type="button"
+                        id="filtroTodas"
+                        class="btn-filtro activo"
+                        onclick="cambiarFiltroSolicitudes('todas')"
+                    >
+                        Todas
+
+                        <span id="contadorTodas" class="contador-filtro"> 0 </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        id="filtroPendientes"
+                        class="btn-filtro"
+                        onclick="cambiarFiltroSolicitudes('pendientes')"
+                    >
+                        Pendientes
+
+                        <span id="contadorPendientes" class="contador-filtro"> 0 </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        id="filtroAprobadas"
+                        class="btn-filtro"
+                        onclick="cambiarFiltroSolicitudes('aprobadas')"
+                    >
+                        Aprobadas
+
+                        <span id="contadorAprobadas" class="contador-filtro"> 0 </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        id="filtroRechazadas"
+                        class="btn-filtro"
+                        onclick="cambiarFiltroSolicitudes('rechazadas')"
+                    >
+                        Rechazadas
+
+                        <span id="contadorRechazadas" class="contador-filtro"> 0 </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- =================================================
+             CARGANDO
+        ================================================= -->
+
+            <div id="cargando" class="cargando">
+                <div class="spinner"></div>
+
+                <p> Cargando solicitudes... </p>
+            </div>
+
+            <!-- =================================================
+             SOLICITUDES
+        ================================================= -->
+
+            <div id="solicitudesContainer" class="solicitudes-container" style="display: none">
+            </div>
+
+            <!-- =================================================
+             SIN SOLICITUDES
+        ================================================= -->
+
+            <div id="sinSolicitudes" class="mensaje" style="display: none">
+                <div class="icono"> 📋 </div>
+
+                <h3 id="tituloSinSolicitudes"> No tienes solicitudes </h3>
+
+                <p id="textoSinSolicitudes"> Actualmente no hay solicitudes asignadas. </p>
+            </div>
+        </main>
+
+        <script src="js/comun.js"></script>
+
+        <script>
+            /* =====================================================
+           USUARIO ACTUAL
+        ===================================================== */
+
+            let usuario = null;
+
+            let usuarioId = null;
+
+            let usuarioNombre = "Usuario";
+
+            let rol = "";
+
+            /* =====================================================
+           INICIAR PÁGINA
+        ===================================================== */
+
+            async function iniciarPagina() {
+                usuario = await obtenerUsuarioSesion();
+
+                if (!usuario) {
+                    return;
+                }
+
+                usuarioId = usuario.Id ?? usuario.id;
+
+                usuarioNombre =
+                    usuario.UsuarioNombre ??
+                    usuario.usuarioNombre ??
+                    usuario.Nombre ??
+                    usuario.nombre ??
+                    "Usuario";
+
+                rol = usuario.Rol ?? usuario.rol ?? "";
+
+                /* =====================================================
+           MOSTRAR USUARIO
+        ===================================================== */
+
+                document.getElementById("nombreUsuario").textContent = usuarioNombre;
+
+                document.getElementById("rolUsuario").textContent = rol;
+
+                document.getElementById("avatarUsuario").textContent = usuarioNombre
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase();
+
+                /* =====================================================
+           VALIDAR ROL
+        ===================================================== */
+
+                const rolesPermitidos = ["Jefe de Depósitos", "Jefe de Cadenas"];
+
+                if (!rolesPermitidos.includes(rol)) {
+                    alert("No tienes permisos para acceder al módulo de aprobaciones.");
+
+                    window.location.href = "index.html";
+                }
+
+                /* =====================================================
+           CONFIGURAR INFORMACIÓN SEGÚN ROL
+        ===================================================== */
+
+                if (rol === "Jefe de Depósitos") {
+                    document.getElementById("tituloResponsable").textContent = "Jefe de Depósitos";
+
+                    document.getElementById("descripcionResponsable").textContent =
+                        "Aquí aparecerán las solicitudes del canal Depósitos asignadas a tu aprobación, incluyendo las que ya fueron procesadas.";
+                } else if (rol === "Jefe de Cadenas") {
+                    document.getElementById("tituloResponsable").textContent = "Jefe de Cadenas";
+
+                    document.getElementById("descripcionResponsable").textContent =
+                        "Aquí aparecerán las solicitudes del canal Cadenas asignadas a tu aprobación, incluyendo las que ya fueron procesadas.";
+                }
+
+                cargarSolicitudes();
+            }
+
+            iniciarPagina();
+
+            /* =====================================================
+           VARIABLES DEL MÓDULO
+        ===================================================== */
+
+            let solicitudesJefe = [];
+
+            let filtroActualSolicitudes = "todas";
+
+            /* =====================================================
+           CARGAR SOLICITUDES
+        ===================================================== */
+
+            async function cargarSolicitudes() {
+                const cargando = document.getElementById("cargando");
+
+                const container = document.getElementById("solicitudesContainer");
+
+                const sinSolicitudes = document.getElementById("sinSolicitudes");
+
+                cargando.style.display = "block";
+
+                container.style.display = "none";
+
+                sinSolicitudes.style.display = "none";
+
+                try {
+                    /*
+                     * IMPORTANTE:
+                     * Ahora se consulta el historial completo del jefe.
+                     */
+
+                    const respuesta = await fetch(
+                        `/api/Solicitudes/jefe/historial?usuarioId=${usuarioId}`,
+                    );
+
+                    /* ==========================================
+                   ERROR HTTP
+                ========================================== */
+
+                    if (!respuesta.ok) {
+                        const texto = await respuesta.text();
+
+                        throw new Error(texto || "No fue posible obtener las solicitudes.");
+                    }
+
+                    const data = await respuesta.json();
+
+                    /* ==========================================
+                   OBTENER LISTA
+                ========================================== */
+
+                    let solicitudes = [];
+
+                    if (Array.isArray(data)) {
+                        solicitudes = data;
+                    } else if (Array.isArray(data.solicitudes)) {
+                        solicitudes = data.solicitudes;
+                    } else if (Array.isArray(data.Solicitudes)) {
+                        solicitudes = data.Solicitudes;
+                    }
+
+                    /* ==========================================
+                   FILTRO ADICIONAL POR CANAL
+                ========================================== */
+
+                    const canalEsperado = rol === "Jefe de Depósitos" ? "depositos" : "cadenas";
+
+                    solicitudes = solicitudes.filter((solicitud) => {
+                        const canal = normalizarTexto(solicitud.Canal ?? solicitud.canal ?? "");
+
+                        return canal === canalEsperado;
+                    });
+
+                    solicitudesJefe = solicitudes;
+
+                    actualizarContadores();
+
+                    cargando.style.display = "none";
+
+                    /* ==========================================
+                   MOSTRAR FILTRO ACTUAL
+                ========================================== */
+
+                    renderizarSolicitudesFiltradas();
+                } catch (error) {
+                    console.error(error);
+
+                    cargando.style.display = "none";
+
+                    container.style.display = "none";
+
+                    sinSolicitudes.style.display = "block";
+
+                    sinSolicitudes.innerHTML = `
+
+                        <div class="icono">
+                            ⚠️
+                        </div>
+
+                        <h3>
+                            No fue posible cargar las solicitudes
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                error.message || "Ocurrió un error al consultar las solicitudes.",
+                            )}
+                        </p>
+
+                    `;
+                }
+            }
+
+            /* =====================================================
+           CAMBIAR FILTRO
+        ===================================================== */
+
+            function cambiarFiltroSolicitudes(filtro) {
+                filtroActualSolicitudes = filtro;
+
+                document.querySelectorAll(".btn-filtro").forEach((boton) => {
+                    boton.classList.remove("activo");
+                });
+
+                const botones = {
+                    todas: "filtroTodas",
+
+                    pendientes: "filtroPendientes",
+
+                    aprobadas: "filtroAprobadas",
+
+                    rechazadas: "filtroRechazadas",
+                };
+
+                const botonActivo = document.getElementById(botones[filtro]);
+
+                if (botonActivo) {
+                    botonActivo.classList.add("activo");
+                }
+
+                renderizarSolicitudesFiltradas();
+            }
+
+            /* =====================================================
+           RENDERIZAR SOLICITUDES FILTRADAS
+        ===================================================== */
+
+            function renderizarSolicitudesFiltradas() {
+                const container = document.getElementById("solicitudesContainer");
+
+                const sinSolicitudes = document.getElementById("sinSolicitudes");
+
+                let solicitudesFiltradas = solicitudesJefe;
+
+                if (filtroActualSolicitudes === "pendientes") {
+                    solicitudesFiltradas = solicitudesJefe.filter(
+                        (solicitud) => obtenerEstadoJefe(solicitud) === "pendiente",
+                    );
+                } else if (filtroActualSolicitudes === "aprobadas") {
+                    solicitudesFiltradas = solicitudesJefe.filter(
+                        (solicitud) => obtenerEstadoJefe(solicitud) === "aprobado",
+                    );
+                } else if (filtroActualSolicitudes === "rechazadas") {
+                    solicitudesFiltradas = solicitudesJefe.filter(
+                        (solicitud) => obtenerEstadoJefe(solicitud) === "rechazado",
+                    );
+                }
+
+                container.innerHTML = "";
+
+                /* ==========================================
+               NO HAY RESULTADOS
+            ========================================== */
+
+                if (solicitudesFiltradas.length === 0) {
+                    container.style.display = "none";
+
+                    mostrarMensajeFiltro();
+
+                    return;
+                }
+
+                sinSolicitudes.style.display = "none";
+
+                /* ==========================================
+               CREAR TARJETAS
+            ========================================== */
+
+                solicitudesFiltradas.forEach((solicitud, indice) => {
+                    const tarjeta = crearTarjetaSolicitud(solicitud);
+
+                    tarjeta.style.animationDelay = `${indice * 0.04}s`;
+
+                    container.appendChild(tarjeta);
+                });
+
+                container.style.display = "flex";
+            }
+
+            /* =====================================================
+           MOSTRAR MENSAJE SEGÚN FILTRO
+        ===================================================== */
+
+            function mostrarMensajeFiltro() {
+                const sinSolicitudes = document.getElementById("sinSolicitudes");
+
+                const titulo = document.getElementById("tituloSinSolicitudes");
+
+                const texto = document.getElementById("textoSinSolicitudes");
+
+                sinSolicitudes.style.display = "block";
+
+                if (filtroActualSolicitudes === "pendientes") {
+                    titulo.textContent = "No tienes solicitudes pendientes";
+
+                    texto.textContent = "Actualmente no hay solicitudes esperando tu aprobación.";
+                } else if (filtroActualSolicitudes === "aprobadas") {
+                    titulo.textContent = "No tienes solicitudes aprobadas";
+
+                    texto.textContent = "Todavía no has aprobado solicitudes desde este módulo.";
+                } else if (filtroActualSolicitudes === "rechazadas") {
+                    titulo.textContent = "No tienes solicitudes rechazadas";
+
+                    texto.textContent = "Todavía no has rechazado solicitudes desde este módulo.";
+                } else {
+                    titulo.textContent = "No tienes solicitudes";
+
+                    texto.textContent = "Actualmente no hay solicitudes asignadas a tu usuario.";
+                }
+            }
+
+            /* =====================================================
+           ACTUALIZAR CONTADORES
+        ===================================================== */
+
+            function actualizarContadores() {
+                const todas = solicitudesJefe.length;
+
+                const pendientes = solicitudesJefe.filter(
+                    (solicitud) => obtenerEstadoJefe(solicitud) === "pendiente",
+                ).length;
+
+                const aprobadas = solicitudesJefe.filter(
+                    (solicitud) => obtenerEstadoJefe(solicitud) === "aprobado",
+                ).length;
+
+                const rechazadas = solicitudesJefe.filter(
+                    (solicitud) => obtenerEstadoJefe(solicitud) === "rechazado",
+                ).length;
+
+                document.getElementById("contadorTodas").textContent = todas;
+
+                document.getElementById("contadorPendientes").textContent = pendientes;
+
+                document.getElementById("contadorAprobadas").textContent = aprobadas;
+
+                document.getElementById("contadorRechazadas").textContent = rechazadas;
+            }
+
+            /* =====================================================
+           OBTENER ESTADO DEL JEFE
+        ===================================================== */
+
+            function obtenerEstadoJefe(solicitud) {
+                const estado = solicitud.EstadoJefe ?? solicitud.estadoJefe ?? "Pendiente";
+
+                return normalizarTexto(estado);
+            }
+
+            /* =====================================================
+           CREAR TARJETA
+        ===================================================== */
+
+            function crearTarjetaSolicitud(solicitud) {
+                const id = solicitud.Id ?? solicitud.id;
+
+                const canal = solicitud.Canal ?? solicitud.canal ?? "";
+
+                const nombreCliente = solicitud.NombreCliente ?? solicitud.nombreCliente ?? "";
+
+                const fechaSolicitud = solicitud.FechaSolicitud ?? solicitud.fechaSolicitud;
+
+                const tipoSolicitud = solicitud.TipoSolicitud ?? solicitud.tipoSolicitud ?? "";
+
+                const detalle = solicitud.DetalleSolicitud ?? solicitud.detalleSolicitud ?? "";
+
+                const creador =
+                    solicitud.UsuarioCreadorNombre ??
+                    solicitud.usuarioCreadorNombre ??
+                    solicitud.NombreCreador ??
+                    solicitud.nombreCreador ??
+                    solicitud.UsuarioNombre ??
+                    solicitud.usuarioNombre ??
+                    "No disponible";
+
+                const estadoOriginal = solicitud.EstadoJefe ?? solicitud.estadoJefe ?? "Pendiente";
+
+                const estado = normalizarTexto(estadoOriginal);
+
+                const observacion = solicitud.ObservacionJefe ?? solicitud.observacionJefe ?? "";
+
+                const fechaAprobacion =
+                    solicitud.FechaAprobacionJefe ?? solicitud.fechaAprobacionJefe;
+
+                /* ==========================================
+               CREAR ELEMENTO
+            ========================================== */
+
+                const tarjeta = document.createElement("div");
+
+                tarjeta.className = "solicitud-card";
+
+                /* ==========================================
+               TIPOS DE SOLICITUD
+            ========================================== */
+
+                const tipos = tipoSolicitud
+                    .split(",")
+                    .map((x) => x.trim())
+                    .filter((x) => x !== "");
+
+                let tiposHtml = "";
+
+                if (tipos.length > 0) {
+                    tiposHtml = tipos
+                        .map(
+                            (tipo) => `
+
+                            <span class="tipo-tag">
+                                ${escapeHtml(tipo)}
+                            </span>
+
+                        `,
+                        )
+                        .join("");
+                } else {
+                    tiposHtml = `
+
+                        <span>
+                            No especificado
+                        </span>
+
+                    `;
+                }
+
+                /* ==========================================
+               ESTADO VISUAL
+            ========================================== */
+
+                let estadoTexto = "PENDIENTE";
+
+                let claseEstado = "";
+
+                if (estado === "aprobado") {
+                    estadoTexto = "APROBADA";
+
+                    claseEstado = "aprobado";
+                } else if (estado === "rechazado") {
+                    estadoTexto = "RECHAZADA";
+
+                    claseEstado = "rechazado";
+                }
+
+                /* ==========================================
+               OBSERVACION / ACCIONES
+            ========================================== */
+
+                let parteFinal = "";
+
+                if (estado === "pendiente") {
+                    parteFinal = `
+
+                        <!-- OBSERVACIÓN -->
+
+                        <div class="seccion-observacion">
+
+                            <label>
+                                Observación de la aprobación
+                            </label>
+
+                            <textarea
+                                id="observacion-${escapeHtml(String(id))}"
+                                placeholder="Escriba una observación..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- ACCIONES -->
+
+                        <div class="acciones">
+
+                            <button
+                                class="btn btn-rechazar"
+                                onclick="rechazarSolicitud(${Number(id)}, this)"
+                            >
+                                Rechazar
+                            </button>
+
+
+                            <button
+                                class="btn btn-aprobar"
+                                onclick="aprobarSolicitud(${Number(id)}, this)"
+                            >
+                                Aprobar
+                            </button>
+
+                        </div>
+
+                    `;
+                } else {
+                    const claseObservacion = estado === "rechazado" ? "rechazada" : "";
+
+                    let observacionHtml = "";
+
+                    if (observacion) {
+                        observacionHtml = `
+
+                            <div class="observacion-historica ${claseObservacion}">
+
+                                <div class="observacion-historica-titulo">
+
+                                    Observación registrada
+
+                                </div>
+
+
+                                <div class="observacion-historica-texto">
+
+                                    ${escapeHtml(observacion)}
+
+                                </div>
+
+                            </div>
+
+                        `;
+                    }
+
+                    let fechaHtml = "";
+
+                    if (fechaAprobacion) {
+                        fechaHtml = `
+
+                            <div class="estado-historico">
+
+                                <span>
+                                    ●
+                                </span>
+
+                                <span>
+
+                                    Solicitud
+                                    <strong>
+                                        ${estado === "aprobado" ? "aprobada" : "rechazada"}
+                                    </strong>
+
+                                    el
+                                    <strong>
+                                        ${formatearFecha(fechaAprobacion)}
+                                    </strong>
+
+                                    por el jefe responsable.
+
+                                </span>
+
+                            </div>
+
+                        `;
+                    }
+
+                    parteFinal = `
+
+                        ${observacionHtml}
+
+                        ${fechaHtml}
+
+                    `;
+                }
+
+                /* ==========================================
+               HTML DE LA TARJETA
+            ========================================== */
+
+                tarjeta.innerHTML = `
+
+                    <div class="solicitud-header">
+
+                        <h2>
+                            Solicitud #${escapeHtml(String(id))}
+                        </h2>
+
+
+                        <span class="estado ${claseEstado}">
+
+                            ${estadoTexto}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="solicitud-body">
+
+
+                        <div class="datos-grid">
+
+
+                            <!-- CREADOR -->
+
+                            <div class="dato">
+
+                                <label>
+                                    Usuario creador
+                                </label>
+
+                                <span>
+                                    ${escapeHtml(creador)}
+                                </span>
+
+                            </div>
+
+
+                            <!-- CANAL -->
+
+                            <div class="dato">
+
+                                <label>
+                                    Canal
+                                </label>
+
+                                <span>
+                                    ${escapeHtml(canal)}
+                                </span>
+
+                            </div>
+
+
+                            <!-- CLIENTE -->
+
+                            <div class="dato">
+
+                                <label>
+                                    Nombre del cliente
+                                </label>
+
+                                <span>
+                                    ${escapeHtml(nombreCliente)}
+                                </span>
+
+                            </div>
+
+
+                            <!-- FECHA -->
+
+                            <div class="dato">
+
+                                <label>
+                                    Fecha de solicitud
+                                </label>
+
+                                <span>
+                                    ${formatearFecha(fechaSolicitud)}
+                                </span>
+
+                            </div>
+
+
+                            <!-- TIPO -->
+
+                            <div class="dato dato-completo">
+
+                                <label>
+                                    Tipo de solicitud
+                                </label>
+
+                                <div class="tipo-solicitud">
+
+                                    ${tiposHtml}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- DETALLE -->
+
+                            <div class="dato dato-completo">
+
+                                <label>
+                                    Detalle de la solicitud
+                                </label>
+
+                                <span>
+                                    ${escapeHtml(detalle)}
+                                </span>
+
+                            </div>
+
+
+                            ${
+                                tieneAdjunto(solicitud)
+                                    ? `
+                            <div class="campo campo-completo">
+
+                                <label>
+                                    Documento adjunto
+                                </label>
+
+                                <span>
+                                    ${enlaceAdjunto(id, solicitud, "")}
+                                </span>
+
+                            </div>
+                            `
+                                    : ""
+                            }
+
+
+                            <div class="campo campo-completo">
+
+                                ${lineaTiempoHTML(solicitud)}
+
+                            </div>
+
+
+                        </div>
+
+
+                        ${parteFinal}
+
+
+                    </div>
+
+                `;
+
+                return tarjeta;
+            }
+
+            /* =====================================================
+           APROBAR
+        ===================================================== */
+
+            async function aprobarSolicitud(id, boton) {
+                const textarea = document.getElementById(`observacion-${id}`);
+
+                const observacion = textarea ? textarea.value.trim() : "";
+
+                const confirmar = confirm("¿Está seguro de aprobar esta solicitud?");
+
+                if (!confirmar) {
+                    return;
+                }
+
+                bloquearBotones(id);
+
+                try {
+                    const respuesta = await fetch(`/api/Solicitudes/${id}/aprobar-jefe`, {
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+
+                        body: JSON.stringify({
+                            usuarioId: usuarioId,
+
+                            observacion: observacion || null,
+                        }),
+                    });
+
+                    const resultado = await obtenerRespuesta(respuesta);
+
+                    if (!respuesta.ok) {
+                        throw new Error(
+                            resultado?.mensaje ||
+                                resultado?.message ||
+                                "No fue posible aprobar la solicitud.",
+                        );
+                    }
+
+                    alert("Solicitud aprobada correctamente.");
+
+                    await cargarSolicitudes();
+                } catch (error) {
+                    console.error(error);
+
+                    alert(error.message || "Ocurrió un error al aprobar la solicitud.");
+
+                    desbloquearBotones(id);
+                }
+            }
+
+            /* =====================================================
+           RECHAZAR
+        ===================================================== */
+
+            async function rechazarSolicitud(id, boton) {
+                const textarea = document.getElementById(`observacion-${id}`);
+
+                const observacion = textarea ? textarea.value.trim() : "";
+
+                if (!observacion) {
+                    alert("Para rechazar una solicitud debe escribir una observación.");
+
+                    textarea?.focus();
+
+                    return;
+                }
+
+                const confirmar = confirm("¿Está seguro de rechazar esta solicitud?");
+
+                if (!confirmar) {
+                    return;
+                }
+
+                bloquearBotones(id);
+
+                try {
+                    const respuesta = await fetch(`/api/Solicitudes/${id}/rechazar-jefe`, {
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+
+                        body: JSON.stringify({
+                            usuarioId: usuarioId,
+
+                            observacion: observacion,
+                        }),
+                    });
+
+                    const resultado = await obtenerRespuesta(respuesta);
+
+                    if (!respuesta.ok) {
+                        throw new Error(
+                            resultado?.mensaje ||
+                                resultado?.message ||
+                                "No fue posible rechazar la solicitud.",
+                        );
+                    }
+
+                    alert("Solicitud rechazada correctamente.");
+
+                    await cargarSolicitudes();
+                } catch (error) {
+                    console.error(error);
+
+                    alert(error.message || "Ocurrió un error al rechazar la solicitud.");
+
+                    desbloquearBotones(id);
+                }
+            }
+
+            /* =====================================================
+           BLOQUEAR BOTONES
+        ===================================================== */
+
+            function bloquearBotones(id) {
+                const textarea = document.getElementById(`observacion-${id}`);
+
+                const tarjeta = textarea?.closest(".solicitud-card");
+
+                if (!tarjeta) {
+                    return;
+                }
+
+                const botones = tarjeta.querySelectorAll("button");
+
+                botones.forEach((boton) => {
+                    boton.disabled = true;
+                });
+
+                if (textarea) {
+                    textarea.disabled = true;
+                }
+            }
+
+            /* =====================================================
+           DESBLOQUEAR BOTONES
+        ===================================================== */
+
+            function desbloquearBotones(id) {
+                const textarea = document.getElementById(`observacion-${id}`);
+
+                const tarjeta = textarea?.closest(".solicitud-card");
+
+                if (!tarjeta) {
+                    return;
+                }
+
+                const botones = tarjeta.querySelectorAll("button");
+
+                botones.forEach((boton) => {
+                    boton.disabled = false;
+                });
+
+                if (textarea) {
+                    textarea.disabled = false;
+                }
+            }
+
+            /* =====================================================
+           OBTENER RESPUESTA API
+        ===================================================== */
+
+            async function obtenerRespuesta(respuesta) {
+                const texto = await respuesta.text();
+
+                if (!texto) {
+                    return {};
+                }
+
+                try {
+                    return JSON.parse(texto);
+                } catch {
+                    return {
+                        mensaje: texto,
+                    };
+                }
+            }
+
+            /* =====================================================
+           NORMALIZAR TEXTO
+        ===================================================== */
+
+            function normalizarTexto(texto) {
+                return texto
+                    .toString()
+                    .trim()
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
+            }
+
+            /* =====================================================
+           FORMATEAR FECHA
+        ===================================================== */
+
+            function formatearFecha(fecha) {
+                if (!fecha) {
+                    return "No disponible";
+                }
+
+                const fechaObjeto = new Date(fecha);
+
+                if (isNaN(fechaObjeto.getTime())) {
+                    return escapeHtml(String(fecha));
+                }
+
+                return fechaObjeto.toLocaleDateString("es-CO", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                });
+            }
+        </script>
+    </body>
+</html>

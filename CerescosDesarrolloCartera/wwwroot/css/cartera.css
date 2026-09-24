@@ -1,0 +1,1203 @@
+﻿:root {
+    --rojo: #c40046;
+    --rojo-oscuro: #a8003c;
+    --rojo-profundo: #8f0034;
+    --rojo-claro: #fce8f0;
+    --rojo-suave: #fff5f8;
+    --azul: #26384d;
+    --azul-2: #34495e;
+    --gris-fondo: #f4f6f8;
+    --gris-texto: #68717c;
+    --gris-suave: #8b949e;
+    --gris-borde: #e5e9ee;
+    --blanco: #ffffff;
+    --verde: #198754;
+    --verde-claro: #eaf7ef;
+    --amarillo: #d58a00;
+    --amarillo-claro: #fff7df;
+    --sombra: 0 12px 35px rgba(38, 56, 77, 0.08);
+    --sombra-hover: 0 20px 48px rgba(38, 56, 77, 0.15);
+    --radio: 18px;
+}
+
+/* =====================================================
+           RESET
+        ===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 5% 0%, rgba(196, 0, 70, 0.07), transparent 27%),
+        radial-gradient(circle at 95% 20%, rgba(38, 56, 77, 0.035), transparent 25%),
+        var(--gris-fondo);
+    color: #333;
+}
+
+/* =====================================================
+           HEADER
+        ===================================================== */
+
+header {
+    min-height: 96px;
+    background: linear-gradient(135deg, #c40046 0%, #b10040 58%, #a00039 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 55px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(196, 0, 70, 0.2);
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    right: -180px;
+    top: -250px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.055);
+}
+
+header::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    left: 38%;
+    bottom: -150px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    z-index: 2;
+}
+
+
+
+
+.titulo-header {
+    font-size: 19px;
+    font-weight: 600;
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    padding-left: 24px;
+}
+
+.usuario-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    position: relative;
+    z-index: 2;
+}
+
+.datos-usuario {
+    text-align: right;
+}
+
+.nombre-usuario {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.rol-usuario {
+    font-size: 12px;
+    opacity: 0.82;
+    margin-top: 4px;
+}
+
+.avatar {
+    width: 47px;
+    height: 47px;
+    border-radius: 50%;
+    background: white;
+    color: var(--rojo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border: 3px solid rgba(255, 255, 255, 0.22);
+}
+
+.btn-cerrar {
+    margin-left: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.09);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(5px);
+}
+
+.btn-cerrar:hover {
+    background: white;
+    color: var(--rojo);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* =====================================================
+           CONTENEDOR PRINCIPAL
+        ===================================================== */
+
+.contenedor {
+    max-width: 1360px;
+    margin: auto;
+    padding: 54px 30px 75px;
+}
+
+/* =====================================================
+           HERO
+        ===================================================== */
+
+.titulo-principal {
+    text-align: center;
+    font-size: 39px;
+    color: var(--azul);
+    margin-bottom: 11px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.titulo-principal span {
+    color: var(--rojo);
+}
+
+.subtitulo {
+    text-align: center;
+    color: var(--gris-texto);
+    margin-bottom: 35px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* =====================================================
+           ENCABEZADO DEL MÓDULO
+        ===================================================== */
+
+.encabezado-modulo {
+    max-width: 980px;
+    margin: 0 auto 31px;
+    background: white;
+    border: 1px solid var(--gris-borde);
+    border-radius: 21px;
+    padding: 21px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-shadow: var(--sombra);
+    position: relative;
+    overflow: hidden;
+}
+
+.encabezado-modulo::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--rojo), #ed6b98);
+}
+
+.modulo-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.modulo-icono {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--rojo-claro), #fff0f5);
+    color: var(--rojo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: 800;
+    box-shadow: inset 0 0 0 1px rgba(196, 0, 70, 0.06);
+}
+
+.modulo-texto h2 {
+    color: var(--azul);
+    font-size: 17px;
+    margin-bottom: 5px;
+    font-weight: 800;
+}
+
+.modulo-texto p {
+    color: var(--gris-texto);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.estado-modulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-radius: 30px;
+    background: var(--verde-claro);
+    color: var(--verde);
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+    border: 1px solid rgba(25, 135, 84, 0.1);
+}
+
+.estado-punto {
+    width: 8px;
+    height: 8px;
+    background: var(--verde);
+    border-radius: 50%;
+    animation: pulso 2s infinite;
+}
+
+@keyframes pulso {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 0 7px rgba(25, 135, 84, 0);
+    }
+}
+
+/* =====================================================
+           FILTROS
+        ===================================================== */
+
+.filtros {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin-bottom: 31px;
+    flex-wrap: wrap;
+}
+
+.btn-filtro {
+    border: 1px solid var(--gris-borde);
+    background: white;
+    color: #59636e;
+    padding: 10px 22px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 11px rgba(38, 56, 77, 0.045);
+}
+
+.btn-filtro:hover {
+    border-color: var(--rojo);
+    color: var(--rojo);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(196, 0, 70, 0.1);
+}
+
+.btn-filtro.activo {
+    background: linear-gradient(135deg, var(--rojo), var(--rojo-oscuro));
+    border-color: var(--rojo);
+    color: white;
+    box-shadow: 0 7px 18px rgba(196, 0, 70, 0.22);
+}
+
+/* =====================================================
+           LISTA
+        ===================================================== */
+
+#listaSolicitudes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+}
+
+/* =====================================================
+           CARD SOLICITUD
+        ===================================================== */
+
+.solicitud-card {
+    background: white;
+    border: 1px solid var(--gris-borde);
+    border-left: 5px solid var(--rojo);
+    border-radius: 19px;
+    padding: 24px;
+    box-shadow: var(--sombra);
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease,
+        border-color 0.28s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.solicitud-card::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(196, 0, 70, 0.08), transparent 70%);
+    pointer-events: none;
+}
+
+.solicitud-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rojo), transparent);
+    opacity: 0.5;
+}
+
+.solicitud-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-hover);
+    border-color: #e2d8dd;
+}
+
+/* =====================================================
+           HEADER CARD
+        ===================================================== */
+
+.encabezado-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 21px;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.numero-solicitud {
+    color: var(--azul);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+}
+
+.numero-solicitud::before {
+    content: "●";
+    color: var(--rojo);
+    font-size: 10px;
+    vertical-align: middle;
+    margin-right: 8px;
+    text-shadow: 0 0 0 var(--rojo);
+}
+
+.canal {
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    padding: 7px 13px;
+    border-radius: 30px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(196, 0, 70, 0.08);
+}
+
+/* =====================================================
+           INFORMACIÓN
+        ===================================================== */
+
+.informacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+    margin-bottom: 20px;
+}
+
+.campo {
+    background: linear-gradient(135deg, #f8fafb, #fafbfc);
+    border: 1px solid #edf0f3;
+    border-radius: 12px;
+    padding: 13px;
+    transition: all 0.2s ease;
+}
+
+.campo:hover {
+    background: white;
+    border-color: #e7d6de;
+    box-shadow: 0 4px 12px rgba(38, 56, 77, 0.035);
+}
+
+.campo-completo {
+    grid-column: 1 / -1;
+}
+
+.campo-titulo {
+    font-size: 10px;
+    color: #8a929b;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 800;
+    letter-spacing: 0.55px;
+}
+
+.campo-valor {
+    font-size: 13px;
+    color: var(--azul);
+    line-height: 1.55;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+/* =====================================================
+           APROBACIÓN JEFE
+        ===================================================== */
+
+.seccion-jefe {
+    background: linear-gradient(135deg, #fff8fa, #fdf0f5);
+    border: 1px solid #f3dce6;
+    padding: 16px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.seccion-jefe::after {
+    content: "✓";
+    position: absolute;
+    right: 14px;
+    top: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(196, 0, 70, 0.08);
+    color: var(--rojo);
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.seccion-jefe h4 {
+    color: var(--rojo);
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    position: relative;
+    z-index: 1;
+}
+
+.seccion-jefe .campo {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.observacion {
+    margin-top: 10px;
+    padding: 11px 12px;
+    background: white;
+    border: 1px solid #f0e2e7;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #59636e;
+    line-height: 1.55;
+}
+
+.observacion strong {
+    color: var(--azul);
+    display: inline-block;
+    margin-right: 3px;
+}
+
+/* =====================================================
+           ESTADO CARTERA
+        ===================================================== */
+
+.seccion-cartera {
+    border-radius: 14px;
+    padding: 15px 16px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.seccion-cartera.pendiente {
+    background: linear-gradient(135deg, #fffaf0, #fff7df);
+    border: 1px solid #f2dfae;
+}
+
+.seccion-cartera.aprobado {
+    background: linear-gradient(135deg, #f1fbf5, #eaf7ef);
+    border: 1px solid #cce8d7;
+}
+
+.seccion-cartera.rechazado {
+    background: linear-gradient(135deg, #fff4f6, #fde9ee);
+    border: 1px solid #f1ccd7;
+}
+
+.titulo-estado-cartera {
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+.seccion-cartera.pendiente .titulo-estado-cartera {
+    color: var(--amarillo);
+}
+
+.seccion-cartera.aprobado .titulo-estado-cartera {
+    color: var(--verde);
+}
+
+.seccion-cartera.rechazado .titulo-estado-cartera {
+    color: var(--rojo);
+}
+
+.texto-estado-cartera {
+    font-size: 12px;
+    color: #59636e;
+    line-height: 1.5;
+}
+
+/* =====================================================
+           ACCIONES
+        ===================================================== */
+
+.acciones {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-aprobar,
+.btn-rechazar {
+    flex: 1;
+    border: none;
+    padding: 13px;
+    border-radius: 11px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 13px;
+    transition: all 0.25s ease;
+}
+
+.btn-aprobar {
+    background: linear-gradient(135deg, var(--rojo), var(--rojo-oscuro));
+    color: white;
+    box-shadow: 0 7px 17px rgba(196, 0, 70, 0.18);
+}
+
+.btn-aprobar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 23px rgba(196, 0, 70, 0.28);
+}
+
+.btn-aprobar:active {
+    transform: translateY(0);
+}
+
+.btn-rechazar {
+    background: white;
+    color: #68717c;
+    border: 1px solid #dfe3e7;
+}
+
+.btn-rechazar:hover {
+    background: #fff5f7;
+    color: var(--rojo);
+    border-color: #e8b8ca;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 17px rgba(196, 0, 70, 0.08);
+}
+
+.btn-rechazar:active {
+    transform: translateY(0);
+}
+
+/* =====================================================
+           MENSAJES
+        ===================================================== */
+
+.mensaje {
+    grid-column: 1 / -1;
+    background: white;
+    border: 1px solid var(--gris-borde);
+    border-radius: 19px;
+    padding: 60px 30px;
+    text-align: center;
+    color: var(--gris-texto);
+    box-shadow: var(--sombra);
+    animation: aparecer 0.3s ease;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mensaje-icono {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 17px;
+    border-radius: 20px;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    box-shadow: inset 0 0 0 1px rgba(196, 0, 70, 0.05);
+}
+
+.mensaje strong {
+    display: block;
+    color: var(--azul);
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.mensaje p {
+    color: var(--gris-texto);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.cargando {
+    color: var(--rojo);
+    font-weight: 800;
+}
+
+/* =====================================================
+           MODAL
+        ===================================================== */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(19, 27, 36, 0.7);
+    backdrop-filter: blur(7px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-contenido {
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    border-radius: 22px;
+    padding: 31px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+    animation: aparecerModal 0.22s ease;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+@keyframes aparecerModal {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-contenido h3 {
+    color: var(--azul);
+    margin-bottom: 9px;
+    font-size: 21px;
+    display: flex;
+    align-items: center;
+}
+
+.modal-contenido h3::before {
+    content: "✕";
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    border-radius: 11px;
+    margin-right: 11px;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* Cuando el modal se abre para aprobar, el icono pasa a verde. */
+
+.modal-contenido.aprobando h3::before {
+    content: "✓";
+    background: var(--verde-claro);
+    color: var(--verde);
+}
+
+.modal-contenido p {
+    color: #707983;
+    margin-bottom: 18px;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.modal-contenido textarea {
+    width: 100%;
+    min-height: 135px;
+    resize: vertical;
+    border: 1px solid #dfe4e8;
+    border-radius: 12px;
+    padding: 14px;
+    outline: none;
+    font-size: 13px;
+    color: var(--azul);
+    transition: all 0.2s ease;
+    background: #fbfcfd;
+}
+
+.modal-contenido textarea:focus {
+    background: white;
+    border-color: var(--rojo);
+    box-shadow: 0 0 0 4px rgba(196, 0, 70, 0.08);
+}
+
+.modal-contenido textarea::placeholder {
+    color: #a0a7ae;
+}
+
+.modal-acciones {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.btn-modal-cancelar,
+.btn-modal-confirmar {
+    flex: 1;
+    padding: 13px;
+    border-radius: 11px;
+    cursor: pointer;
+    font-weight: 800;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-cancelar {
+    background: #f0f2f4;
+    color: #59636e;
+}
+
+.btn-modal-cancelar:hover {
+    background: #e5e8eb;
+    transform: translateY(-1px);
+}
+
+.btn-modal-confirmar {
+    background: linear-gradient(135deg, var(--rojo), var(--rojo-oscuro));
+    color: white;
+    box-shadow: 0 7px 17px rgba(196, 0, 70, 0.18);
+}
+
+.btn-modal-confirmar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(196, 0, 70, 0.27);
+}
+
+/* El mismo modal se usa para aprobar: ahi el boton va en verde
+   para que no se confunda con el rechazo. */
+
+.btn-modal-confirmar.btn-modal-aprobar {
+    background: linear-gradient(135deg, var(--verde), #12633d);
+    box-shadow: 0 7px 17px rgba(25, 135, 84, 0.2);
+}
+
+.btn-modal-confirmar.btn-modal-aprobar:hover {
+    box-shadow: 0 10px 22px rgba(25, 135, 84, 0.3);
+}
+
+/* =====================================================
+           FOOTER
+        ===================================================== */
+
+footer {
+    text-align: center;
+    padding: 26px;
+    background: white;
+    color: #9299a1;
+    font-size: 12px;
+    border-top: 1px solid #e8ebee;
+}
+
+/* =====================================================
+           RESPONSIVE 950
+        ===================================================== */
+
+@media (max-width: 950px) {
+    header {
+        padding: 18px 25px;
+    }
+
+    #listaSolicitudes {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================
+           RESPONSIVE 700
+        ===================================================== */
+
+@media (max-width: 700px) {
+    header {
+        flex-direction: column;
+        gap: 18px;
+        padding: 20px;
+    }
+
+    .logo-area {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .usuario-header {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .datos-usuario {
+        text-align: right;
+    }
+
+    .titulo-header {
+        font-size: 17px;
+        padding-left: 18px;
+    }
+
+
+    .contenedor {
+        padding: 38px 17px 55px;
+    }
+
+    .titulo-principal {
+        font-size: 29px;
+    }
+
+    .subtitulo {
+        font-size: 14px;
+        margin-bottom: 28px;
+    }
+
+    .encabezado-modulo {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .estado-modulo {
+        align-self: flex-start;
+    }
+}
+
+/* =====================================================
+           RESPONSIVE 550
+        ===================================================== */
+
+@media (max-width: 550px) {
+    .usuario-header {
+        flex-wrap: wrap;
+    }
+
+    .btn-cerrar {
+        margin-left: 0;
+    }
+
+    .informacion {
+        grid-template-columns: 1fr;
+    }
+
+    .campo-completo {
+        grid-column: auto;
+    }
+
+    .acciones {
+        flex-direction: column;
+    }
+
+    .modal-contenido {
+        padding: 24px;
+    }
+
+    .modal-acciones {
+        flex-direction: column;
+    }
+
+    .encabezado-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .canal {
+        align-self: flex-start;
+    }
+}
+
+/* =========================================================
+   LOGO CORPORATIVO
+   =========================================================
+   Imagen oficial sobre base blanca, porque el logo es rojo
+   con fondo transparente y el encabezado tambien es rojo.
+   Al hacer clic vuelve al menu inicial.
+========================================================= */
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 9px 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.13);
+    transition: transform 0.25s ease;
+}
+
+.logo:hover {
+    transform: scale(1.03);
+}
+
+.logo img {
+    display: block;
+    height: 34px;
+    width: auto;
+}
+
+@media (max-width: 600px) {
+    .logo {
+        padding: 7px 11px;
+    }
+
+    .logo img {
+        height: 26px;
+    }
+}
+
+/* =========================================================
+   ENLACE DEL DOCUMENTO ADJUNTO
+========================================================= */
+
+.btn-adjunto {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 6px;
+    padding: 9px 14px;
+    border: 1px solid #d9dee4;
+    border-radius: 9px;
+    background: #f7f8fa;
+    color: #26384d;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    word-break: break-all;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-adjunto:hover {
+    background: #eef1f4;
+    border-color: #c40046;
+    color: #c40046;
+}
+
+/* =========================================================
+   TRAZABILIDAD RESUMIDA DE LA SOLICITUD
+========================================================= */
+
+.linea-tiempo-solicitud {
+    margin-top: 6px;
+    padding: 16px 18px;
+    border: 1px solid #e5e9ee;
+    border-radius: 13px;
+    background: #fafbfc;
+}
+
+.linea-tiempo-titulo {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #68717c;
+    margin-bottom: 13px;
+}
+
+.etapas-solicitud {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.etapas-solicitud .etapa {
+    position: relative;
+    padding: 0 0 15px 22px;
+    border-left: 2px solid #e1e6ec;
+}
+
+.etapas-solicitud .etapa:last-child {
+    padding-bottom: 0;
+    border-left-color: transparent;
+}
+
+.etapas-solicitud .etapa::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #c9d2db;
+    border: 2px solid #fafbfc;
+}
+
+.etapas-solicitud .etapa-creada::before {
+    background: #315477;
+}
+
+.etapas-solicitud .etapa-aprobado::before {
+    background: #198754;
+}
+
+.etapas-solicitud .etapa-rechazado::before {
+    background: #c40046;
+}
+
+.etapas-solicitud .etapa-pendiente::before {
+    background: #d58a00;
+}
+
+.etapas-solicitud .etapa-anulado::before {
+    background: #b3bcc5;
+}
+
+.etapa-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.etapa-titulo {
+    font-size: 13.5px;
+    font-weight: bold;
+    color: #26384d;
+}
+
+.etapa-estado {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 11px;
+    border-radius: 30px;
+    white-space: nowrap;
+    background: #eef1f4;
+    color: #68717c;
+}
+
+.etapa-creada .etapa-estado {
+    background: #e8eef7;
+    color: #315477;
+}
+
+.etapa-aprobado .etapa-estado {
+    background: #eaf7ef;
+    color: #198754;
+}
+
+.etapa-rechazado .etapa-estado {
+    background: #fce8f0;
+    color: #c40046;
+}
+
+.etapa-pendiente .etapa-estado {
+    background: #fff7df;
+    color: #d58a00;
+}
+
+.etapa-fecha {
+    margin-top: 3px;
+    font-size: 12.5px;
+    color: #68717c;
+}
+
+.linea-tiempo-pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    padding-top: 13px;
+    border-top: 1px dashed #dfe4ea;
+}
+
+.resultado-final {
+    font-size: 13px;
+    color: #68717c;
+}
+
+.resultado-final strong {
+    color: #26384d;
+}
+
+.enlace-trazabilidad {
+    font-size: 12.5px;
+    font-weight: bold;
+    color: #c40046;
+    text-decoration: none;
+    padding: 7px 13px;
+    border: 1px solid #f1d4df;
+    border-radius: 8px;
+    background: #fde8ef;
+    transition: background 0.2s ease;
+}
+
+.enlace-trazabilidad:hover {
+    background: #f9d9e4;
+}
+

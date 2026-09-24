@@ -1,0 +1,225 @@
+﻿<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Iniciar sesión - Cerescos</title>
+
+        <link rel="stylesheet" href="css/login.css" />
+    </head>
+
+    <body>
+        <div class="login-container">
+            <div class="login-card">
+                <!-- =================================================
+                 LOGO
+            ================================================== -->
+
+                <div class="logo-wrapper">
+                    <a href="login.html" class="logo" title="Inicio">
+                        <img src="img/logo-cerescos.png" alt="Cerescos" />
+                    </a>
+
+                    <div class="indicador">
+                        <span class="indicador-punto"></span>
+
+                        Acceso al sistema
+                    </div>
+                </div>
+
+                <!-- =================================================
+                 SUBTÍTULO
+            ================================================== -->
+
+                <div class="subtitle"> Inicia sesión para gestionar tus solicitudes </div>
+
+                <!-- =================================================
+                 FORMULARIO
+            ================================================== -->
+
+                <form id="loginForm">
+                    <!-- USUARIO -->
+
+                    <div class="form-group">
+                        <label for="usuario"> Usuario </label>
+
+                        <div class="campo-contenedor">
+                            <div class="campo-icono"> U </div>
+
+                            <input
+                                type="text"
+                                id="usuario"
+                                name="usuario"
+                                placeholder="Ingresa tu usuario"
+                                autocomplete="username"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <!-- CONTRASEÑA -->
+
+                    <div class="form-group">
+                        <label for="password"> Contraseña </label>
+
+                        <div class="campo-contenedor">
+                            <div class="campo-icono"> • </div>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Ingresa tu contraseña"
+                                autocomplete="current-password"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <!-- RECUPERAR CONTRASEÑA -->
+
+                    <div class="forgot">
+                        <a href="#" onclick="recuperarPassword(event)">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
+
+                    <!-- BOTÓN -->
+
+                    <button type="submit" id="btnLogin"> INICIAR SESIÓN </button>
+
+                    <!-- MENSAJE -->
+
+                    <div id="mensaje" class="mensaje"> </div>
+                </form>
+
+                <!-- =================================================
+                 REGISTRO
+            ================================================== -->
+
+                <div class="register">
+                    ¿No tienes una cuenta?
+
+                    <a href="registro.html"> Registrarse </a>
+                </div>
+
+                <!-- =================================================
+                 INDICADOR DE SEGURIDAD
+            ================================================== -->
+
+                <div class="seguridad">
+                    <span class="seguridad-icono"> ✓ </span>
+
+                    Acceso protegido al sistema Cerescos
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const loginForm = document.getElementById("loginForm");
+            const btnLogin = document.getElementById("btnLogin");
+            const mensaje = document.getElementById("mensaje");
+
+            function mostrarMensaje(texto, tipo) {
+                mensaje.textContent = texto;
+
+                mensaje.className = "mensaje " + tipo;
+            }
+
+            loginForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                const usuario = document.getElementById("usuario").value.trim();
+
+                const password = document.getElementById("password").value;
+
+                if (!usuario || !password) {
+                    mostrarMensaje("Ingrese usuario y contraseña.", "error");
+
+                    return;
+                }
+
+                btnLogin.disabled = true;
+
+                btnLogin.textContent = "INGRESANDO...";
+
+                try {
+                    const response = await fetch("/api/auth/login", {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+
+                        body: JSON.stringify({
+                            usuarioNombre: usuario,
+
+                            password: password,
+                        }),
+                    });
+
+                    const datos = await response.json();
+
+                    if (!response.ok) {
+                        mostrarMensaje(
+                            datos.mensaje || "Usuario o contraseña incorrectos.",
+                            "error",
+                        );
+
+                        btnLogin.disabled = false;
+
+                        btnLogin.textContent = "INICIAR SESIÓN";
+
+                        return;
+                    }
+
+                    /*
+                    GUARDAMOS LOS DATOS DEL USUARIO
+                    PARA UTILIZARLOS EN INDEX Y EN
+                    LAS DEMÁS PÁGINAS.
+                */
+
+                    localStorage.setItem("usuarioCerescos", JSON.stringify(datos.usuario));
+
+                    mostrarMensaje("Inicio de sesión correcto. Redirigiendo...", "exito");
+
+                    /*
+                    ESPERAMOS UN MOMENTO PARA QUE
+                    SE VEA EL MENSAJE Y LUEGO
+                    VAMOS AL INDEX.
+                */
+
+                    setTimeout(function () {
+                        window.location.href = "index.html";
+                    }, 500);
+                } catch (error) {
+                    console.error(error);
+
+                    mostrarMensaje("No fue posible conectar con el servidor.", "error");
+
+                    btnLogin.disabled = false;
+
+                    btnLogin.textContent = "INICIAR SESIÓN";
+                }
+            });
+
+            /*
+            RECUPERACIÓN DE CONTRASEÑA
+
+            Todavía no tenemos implementado el envío
+            de correo. Dejamos preparado el enlace
+            para construirlo posteriormente.
+        */
+
+            function recuperarPassword(event) {
+                event.preventDefault();
+
+                mostrarMensaje(
+                    "La recuperación de contraseña estará disponible próximamente.",
+                    "error",
+                );
+            }
+        </script>
+    </body>
+</html>
